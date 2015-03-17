@@ -1,6 +1,8 @@
 #include "SDL2/SDL.h"
 #include <stdio.h>
+#include <math.h> 
 
+#include "utilities.h"
 
 SDL_Window *window = NULL;
 SDL_Surface *screen = NULL;
@@ -35,6 +37,28 @@ void setPixel(SDL_Surface *Surface, int x, int y,Uint8 R, Uint8 G,Uint8 B)
     return;
 }
 
+void line(SDL_Surface *Surface, int x0, int y0, int x1, int y1, Uint8 R, Uint8 G, Uint8 B)
+{
+    float w = x1-x0;
+    float h = y1-y0;
+    float len = sqrt((w*w)+(h*h));
+    if(len < 1)
+    {
+        setPixel(Surface, x0, y0, R, G, B);
+    }
+    else
+    {
+        float dx = w/len;
+        float dy = h/len;
+        for(int i = 0; i < len; i++)
+        {
+            int xx = floor(x0+dx*i); 
+            int yy = floor(y0+dy*i);
+            setPixel(Surface, xx, yy, R, G, B);
+        }
+    }
+}
+
 void init()
 {
     SDL_Init(SDL_INIT_VIDEO);
@@ -55,10 +79,13 @@ void render()
 {
     //SDL_SetRenderDrawColor(image, 0xff, 0xff, 0xff, 0xff );
     //SDL_RenderDrawLine(image, amouseY, amouseY, mouseX, mouseY);
-    setPixel(image, mouseX, mouseY, 255, 0, 0);
+    //SDL_RenderDrawLine(image, amouseX, amouseX, mouseX, mouseY);
+    //setPixel(image, mouseX, mouseY, 255, 0, 0);
+    line(image, amouseX, amouseY, mouseX, mouseY, 0, 255, 0);
+
     SDL_Rect srect;
-    srect.x = screen->w/2-image->w/2;
-    srect.y = screen->h/2-image->h/2;
+    srect.x = 0;//screen->w/2-image->w/2;
+    srect.y = 0;//screen->h/2-image->h/2;
     srect.w = image->w;
     srect.h = image->h;
     SDL_BlitSurface( image, NULL, screen, &srect );
