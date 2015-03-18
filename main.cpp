@@ -2,62 +2,20 @@
 #include <stdio.h>
 #include <math.h> 
 
+#include "graphics.h"
 #include "utilities.h"
 
 SDL_Window *window = NULL;
 SDL_Surface *screen = NULL;
-SDL_Surface *image = NULL;
+Graphics canvas(200, 200);
 
 bool quit = false;
+
 int amouseX = 0; 
 int amouseY = 0;
 int mouseX = 0;
 int mouseY = 0;
-
-
-void setPixel(SDL_Surface *Surface, int x, int y,Uint8 R, Uint8 G,Uint8 B)
-{
-
-    if( x < 0 || x >= Surface->w || y < 0 || y >= Surface->h)
-    {
-        return;
-    }
-    Uint32 color = SDL_MapRGB(Surface->format, R, G, B);
-    Uint8 *  bufp= (Uint8 *)Surface->pixels + y*Surface->pitch + x*Surface->format->BytesPerPixel;
-    switch (Surface->format->BytesPerPixel) {
-        case 4:
-        bufp[3] = color >> 24;
-        case 3:
-        bufp[2] = color >> 16;
-        case 2:
-        bufp[1] = color >> 8;
-        case 1:
-        bufp[0] = color;
-    }
-    return;
-}
-
-void line(SDL_Surface *Surface, int x0, int y0, int x1, int y1, Uint8 R, Uint8 G, Uint8 B)
-{
-    float w = x1-x0;
-    float h = y1-y0;
-    float len = sqrt((w*w)+(h*h));
-    if(len < 1)
-    {
-        setPixel(Surface, x0, y0, R, G, B);
-    }
-    else
-    {
-        float dx = w/len;
-        float dy = h/len;
-        for(int i = 0; i < len; i++)
-        {
-            int xx = floor(x0+dx*i); 
-            int yy = floor(y0+dy*i);
-            setPixel(Surface, xx, yy, R, G, B);
-        }
-    }
-}
+bool mousePressed = false;
 
 void init()
 {
@@ -69,7 +27,6 @@ void init()
 void close()
 {
 
-    SDL_FreeSurface(image);
     SDL_DestroyWindow(window);
     SDL_Quit();
 
@@ -81,14 +38,16 @@ void render()
     //SDL_RenderDrawLine(image, amouseY, amouseY, mouseX, mouseY);
     //SDL_RenderDrawLine(image, amouseX, amouseX, mouseX, mouseY);
     //setPixel(image, mouseX, mouseY, 255, 0, 0);
-    line(image, amouseX, amouseY, mouseX, mouseY, 0, 255, 0);
 
-    SDL_Rect srect;
-    srect.x = 0;//screen->w/2-image->w/2;
-    srect.y = 0;//screen->h/2-image->h/2;
-    srect.w = image->w;
-    srect.h = image->h;
-    SDL_BlitSurface( image, NULL, screen, &srect );
+
+    if(mousePressed)
+    {   
+        canvas.stroke(5);
+        canvas.line(amouseX, amouseY, mouseX, mouseY);
+    }
+
+    //image(screen, canvas,  screen->w/2, screen->h/2);
+    SDL_BlitSurface(canvas.get(), NULL, screen, NULL);
 }
 
 int main(int argc, char* argv[]) 
@@ -103,11 +62,13 @@ int main(int argc, char* argv[])
     else
     {
 
-        screen = SDL_GetWindowSurface( window );
+        screen = SDL_GetWindowSurface(window);
         SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 100, 100, 100));
-        image = SDL_CreateRGBSurface(0,200,200,32,0,0,0,0);
-        SDL_FillRect(image, NULL, SDL_MapRGB(image->format, 250, 250, 250));
-        
+        canvas.background(220);
+        /*
+        canvas = SDL_CreateRGBSurface(0,200,200,32,0,0,0,0);
+        SDL_FillRect(canvas, NULL, SDL_MapRGB(canvas->format, 250, 250, 250));
+        */
         SDL_Event e;
 
         while( !quit )
@@ -121,6 +82,14 @@ int main(int argc, char* argv[])
                     quit = true;
                 }
 
+                if( e.type == SDL_MOUSEBUTTONUP )
+                {
+                    mousePressed = false;
+                }
+                if( e.type == SDL_MOUSEBUTTONDOWN )
+                {
+                    mousePressed = true;
+                }
                 amouseX = mouseX; 
                 amouseY = mouseY;
                 SDL_GetMouseState( &mouseX, &mouseY );
