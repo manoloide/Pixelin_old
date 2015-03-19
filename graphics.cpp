@@ -61,7 +61,8 @@ void Graphics::line(int x0, int y0, int x1, int y1)
 	}
 }
 
-void Graphics::background(Uint8 g){
+void Graphics::background(Uint8 g)
+{
 	SDL_FillRect(surface, NULL, color(g));
 }
 
@@ -83,25 +84,30 @@ void Graphics::image(SDL_Surface *img, int x, int y, int w, int h)
 
 void Graphics::image(SDL_Surface *img, int x, int y)
 {
-	SDL_Rect ar;
-    ar.x = x;//screen->w/2-image->w/2;
-    ar.y = y;//screen->h/2-image->h/2;
-    ar.w = img->w*2;
-    ar.h = img->h*2;
-    SDL_BlitSurface( img, NULL, surface, &ar );
+	SDL_Rect rect;
+    rect.x = x;//screen->w/2-image->w/2;
+    rect.y = y;//screen->h/2-image->h/2;
+    rect.w = img->w*2;
+    rect.h = img->h*2;
+    SDL_BlitSurface( img, NULL, surface, &rect );
 }
 
 
-void Graphics::fill(Uint8 r, Uint8 g, Uint8 b){
+void Graphics::fill(Uint8 r, Uint8 g, Uint8 b)
+{
 	fillColor = color(r, g, b);
 }
 void Graphics::fill(Uint8 g){
 	fill(g, g, g);
 }
-void Graphics::stroke(Uint8 r, Uint8 g, Uint8 b){
+
+void Graphics::stroke(Uint8 r, Uint8 g, Uint8 b)
+{
 	strokeColor = color(r, g, b);
 }
-void Graphics::stroke(Uint8 g){
+
+void Graphics::stroke(Uint8 g)
+{
 	stroke(g, g, g);
 }
 

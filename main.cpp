@@ -3,11 +3,17 @@
 #include <math.h> 
 
 #include "graphics.h"
+#include "layout.h"
 #include "utilities.h"
 
 SDL_Window *window = NULL;
 SDL_Surface *screen = NULL;
-Graphics canvas(200, 200);
+int screenWidth = 640;
+int screenHeight = 480;
+
+Graphics* canvas;
+
+Layout* baseLayout;// = new Layout();
 
 bool quit = false;
 
@@ -21,7 +27,7 @@ void init()
 {
     SDL_Init(SDL_INIT_VIDEO);
 
-    window = SDL_CreateWindow("Pixelin", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_OPENGL);
+    window = SDL_CreateWindow("Pixelin", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenWidth, screenHeight, SDL_WINDOW_RESIZABLE);
 }
 
 void close()
@@ -29,6 +35,19 @@ void close()
 
     SDL_DestroyWindow(window);
     SDL_Quit();
+
+}
+
+void resize(int w, int h)
+{
+    SDL_FreeSurface(screen);
+    screen = SDL_GetWindowSurface(window);
+
+    screenWidth = w;
+    screenHeight = h;
+    baseLayout->resize(w, h);
+    baseLayout->show();
+
 
 }
 
@@ -42,12 +61,13 @@ void render()
 
     if(mousePressed)
     {   
-        canvas.stroke(5);
-        canvas.line(amouseX, amouseY, mouseX, mouseY);
+        canvas->stroke(5);
+        canvas->line(amouseX, amouseY, mouseX, mouseY);
     }
 
     //image(screen, canvas,  screen->w/2, screen->h/2);
-    SDL_BlitSurface(canvas.get(), NULL, screen, NULL);
+    SDL_BlitSurface(canvas->get(), NULL, screen, NULL);
+    SDL_BlitSurface(baseLayout->getSurface(), NULL, screen, NULL);
 }
 
 int main(int argc, char* argv[]) 
@@ -64,11 +84,30 @@ int main(int argc, char* argv[])
 
         screen = SDL_GetWindowSurface(window);
         SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 100, 100, 100));
-        canvas.background(220);
-        /*
-        canvas = SDL_CreateRGBSurface(0,200,200,32,0,0,0,0);
-        SDL_FillRect(canvas, NULL, SDL_MapRGB(canvas->format, 250, 250, 250));
-        */
+        canvas = new Graphics(200, 200);
+        canvas->background(220);
+
+        baseLayout = new Layout();
+        baseLayout->setStyle(baseLayout->Vertical); 
+
+        Layout* v1 = new Layout(baseLayout);
+        v1->setMaxHeight(22);
+        Layout* v2 = new Layout(baseLayout);
+        v2->setMaxHeight(28);
+        Layout* v3 = new Layout(baseLayout);
+        Layout* v4 = new Layout(baseLayout);
+        v4->setMaxHeight(28);
+
+        Layout* h1 =  new Layout(v3);
+        h1->setMaxWidth(80);
+        Layout* h2 =  new Layout(v3);
+        Layout* h3 =  new Layout(v3);
+        h3->setMaxWidth(180);
+
+
+        baseLayout->resize(screenWidth, screenHeight);
+        baseLayout->show();
+
         SDL_Event e;
 
         while( !quit )
@@ -76,7 +115,9 @@ int main(int argc, char* argv[])
 
             while( SDL_PollEvent( &e ) != 0 )
             {
-
+                if( e.window.event == SDL_WINDOWEVENT_RESIZED){
+                    resize(e.window.data1, e.window.data2); 
+                }
                 if( e.type == SDL_QUIT )
                 {
                     quit = true;
