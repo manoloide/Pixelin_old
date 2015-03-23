@@ -175,7 +175,6 @@ void Layout::updateFocus()
 		ml += pp->getLeft();
 		mt += pp->getTop();
 		pp = pp->getParent();
-		v++;
 		//printf("%i %i %i %i\n", mouseX, mouseY, ml, mt);
 	}
 
