@@ -161,8 +161,49 @@ void Layout::resize(int _w, int _h)
 	resize();
 }
 
+void Layout::updateFocus()
+{
+	int mouseX = -1;
+	int mouseY = -1;
+	SDL_GetMouseState( &mouseX, &mouseY );
+	int ml = 0;
+	int mt = 0;
+
+	Layout* pp = getParent();
+	while(pp != NULL)
+	{
+		ml += pp->getLeft();
+		mt += pp->getTop();
+		pp = pp->getParent();
+		v++;
+		//printf("%i %i %i %i\n", mouseX, mouseY, ml, mt);
+	}
+
+	//printf("%i %i %i %i\n", mouseX, mouseX, ml, mt);
+
+	mouseX -= ml;
+	mouseY -= mt;
+
+	if(mouseX >= left && mouseX < left+w && mouseY >= top && mouseY < top+h)
+	{
+		if(!focused) focused = true;
+	}
+	else
+	{
+		if(focused)
+		{
+			focused = false;
+			redraw();
+		}
+	}
+
+
+}
+
 void Layout::show()
 {
+	updateFocus();
+	if(focused) redraw();
 	for(int i = 0; i < children.size(); i++)
 	{
 		Layout* l = children.at(i);
@@ -184,7 +225,12 @@ void Layout::show()
 
 void Layout::redraw()
 {
-	SDL_FillRect(surface, NULL, backgroundColor);
+	Uint32 col = backgroundColor;
+	if(focused){
+		col = 0xFFFF0000;
+	}
+
+	SDL_FillRect(surface, NULL, col);
 }
 
 void Layout::addChild(Layout* child){

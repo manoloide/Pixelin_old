@@ -17,8 +17,11 @@ public:
 	void resize(int w, int h);
 	void show();
 	void redraw();
+	void updateFocus();
 
 	void addChild(Layout* child);
+
+	Layout* getParent() const { return parent;}
 
 	void setStyle(Style _style);
 	void setParent(Layout* _parent);
@@ -26,6 +29,7 @@ public:
 private:
 	void init();
 
+	bool focused;
 	Layout *parent;
 	Style style;
 	std::vector<Layout *> children;

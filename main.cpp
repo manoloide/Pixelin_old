@@ -6,6 +6,12 @@
 #include "layout.h"
 #include "utilities.h"
 
+void init();
+void close();
+void resize();
+void resize(int, int);
+void render();
+
 SDL_Window *window = NULL;
 SDL_Surface *screen = NULL;
 int screenWidth = 640;
@@ -48,7 +54,7 @@ void resize(int w, int h)
     baseLayout->resize(w, h);
     baseLayout->show();
 
-
+    //render();
 }
 
 void render()
@@ -61,13 +67,15 @@ void render()
 
     if(mousePressed)
     {   
+        //printf("%i %i %i %i\n", amouseX, amouseY, mouseX, mouseY);
         canvas->stroke(5);
         canvas->line(amouseX, amouseY, mouseX, mouseY);
     }
 
+    baseLayout->show();
     //image(screen, canvas,  screen->w/2, screen->h/2);
-    SDL_BlitSurface(canvas->get(), NULL, screen, NULL);
     SDL_BlitSurface(baseLayout->getSurface(), NULL, screen, NULL);
+    SDL_BlitSurface(canvas->get(), NULL, screen, NULL);
 }
 
 int main(int argc, char* argv[]) 
@@ -131,9 +139,19 @@ int main(int argc, char* argv[])
                 {
                     mousePressed = true;
                 }
+
                 amouseX = mouseX; 
                 amouseY = mouseY;
-                SDL_GetMouseState( &mouseX, &mouseY );
+                if( e.type == SDL_MOUSEMOTION )
+                {
+                    mouseX = e.motion.x;
+                    mouseY = e.motion.y;
+                    /*
+                    amouseX = mouseX; 
+                    amouseY = mouseY;
+                    SDL_GetMouseState( &mouseX, &mouseY );
+                    */
+                }
             }
 
             render();
