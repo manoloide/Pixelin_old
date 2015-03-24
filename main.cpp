@@ -75,7 +75,7 @@ void render()
     baseLayout->show();
     //image(screen, canvas,  screen->w/2, screen->h/2);
     SDL_BlitSurface(baseLayout->getSurface(), NULL, screen, NULL);
-    SDL_BlitSurface(canvas->get(), NULL, screen, NULL);
+    //SDL_BlitSurface(canvas->get(), NULL, screen, NULL);
 }
 
 int main(int argc, char* argv[]) 

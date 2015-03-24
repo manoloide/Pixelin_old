@@ -87,7 +87,7 @@ void Layout::resize()
 				newWidth = rest/total;
 				int ap = 0;
 				for (int i = 0; i < c; i++) {
-					Layoutable* l = children.at(i);
+					Layout* l = children.at(i);
 					l->setLeft(ap);
 					if (l->getWidth() == 0) {
 						l->setWidth(newWidth);
@@ -238,6 +238,50 @@ void Layout::addChild(Layout* child){
 	resize();
 }
 
+void Layout::setMinWidth(int _minWidth)
+{
+	minWidth = _minWidth;
+}
+
+void Layout::setMaxWidth(int _maxWidth)
+{
+	maxWidth = _maxWidth;
+}
+
+void Layout::setMinHeight(int _minHeight)
+{
+	minHeight = _minHeight;
+}
+
+void Layout::setMaxHeight(int _maxHeight)
+{
+	maxHeight = _maxHeight;
+}
+
+void Layout::setWidth(int _w)
+{
+	w = _w;
+}
+
+void Layout::setHeight(int _h)
+{
+	h = _h;
+}
+
+void Layout::setLeft(int _left)
+{
+	left = _left;
+}
+
+void Layout::setTop(int _top)
+{
+	top = _top;
+}
+
+void Layout::setBackgroundColor(Uint32 _backgroundColor)
+{
+	backgroundColor = _backgroundColor;
+}
 
 void Layout::setStyle(Style _style)
 {
