@@ -15,7 +15,7 @@ public:
 	void resize();
 	void resize(int w, int h);
 	void show();
-	void redraw();
+	virtual void redraw();
 	void updateFocus();
 
 	void addChild(Layout* child);
@@ -30,6 +30,8 @@ public:
 	int getMinHeight() const { return minHeight;}
 	int getMaxHeight() const { return maxHeight;}
 
+	bool getFocus() const { return focused;}
+	Uint32 getBackgroundColor() const { return backgroundColor;}
 	SDL_Surface* getSurface() const { return surface;}
 	Layout* getParent() const { return parent;}
 

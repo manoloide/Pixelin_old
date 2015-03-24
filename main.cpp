@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <math.h> 
 
+
+#include "canvas.h"
 #include "graphics.h"
 #include "layout.h"
 #include "utilities.h"
@@ -108,7 +110,7 @@ int main(int argc, char* argv[])
 
         Layout* h1 =  new Layout(v3);
         h1->setMaxWidth(80);
-        Layout* h2 =  new Layout(v3);
+        Canvas* h2 =  new Canvas(v3);
         Layout* h3 =  new Layout(v3);
         h3->setMaxWidth(180);
 
