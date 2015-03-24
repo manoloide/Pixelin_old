@@ -13,6 +13,7 @@ View::View(Layout* _parent) : Layout(_parent)
 
 void View::update()
 {
+	printf("%i %i\n", realLeft, realTop);
 	if(events->mousePressed && events->mouseButton == SDL_BUTTON_MIDDLE)
 	{
 		posx += events->mouseX-events->amouseX;
@@ -20,17 +21,17 @@ void View::update()
 	}
 	if(events->mousePressed && events->mouseButton == SDL_BUTTON_LEFT)
 	{
-		int amx = events->amouseX-posx;
-		int amy = events->amouseY-posy;
-		int mx = events->mouseX-posx;
-		int my = events->mouseY-posy;
+		int amx = events->amouseX-posx-realLeft;
+		int amy = events->amouseY-posy-realTop;
+		int mx = events->mouseX-posx-realLeft;
+		int my = events->mouseY-posy-realTop;
 		canvas->line(amx, amy, mx, my);
 	}
 }
 
 void View::redraw()
 {
-	
+
 	Uint32 col = getBackgroundColor();
 	SDL_FillRect(getSurface(), NULL, col);
 

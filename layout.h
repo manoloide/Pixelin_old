@@ -50,6 +50,8 @@ public:
 	void setStyle(Style _style);
 	void setParent(Layout* _parent);
 
+	int realLeft, realTop;
+
 private:
 	void init();
 

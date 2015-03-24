@@ -52,19 +52,6 @@ void Layout::resize()
 	{	
 		if(style == Horizontal)
 		{
-			/*
-			int nw = w/c;
-			for(int i = 0; i < c; i++)
-			{
-				Layout* l = children.at(i);
-				l->setHeight(h);
-				l->setTop(0);
-
-				l->setWidth(nw);
-				l->setLeft(nw*i);	
-				l->resize();	
-			}
-			*/
 			int newWidth = w/c;
 			int total = 0;
 			int rest = w;
@@ -98,19 +85,6 @@ void Layout::resize()
 		}
 		if(style == Vertical)
 		{
-			/*
-			int nh = h/c;
-			for(int i = 0; i < c; i++)
-			{
-				Layout* l = children.at(i);
-				l->setHeight(nh);
-				l->setTop(nh*i);
-
-				l->setWidth(w);
-				l->setLeft(0);	
-				l->resize();
-			}
-			*/
 			int newHeight = h/c;
 			int total = 0;
 			int rest = h;
@@ -148,6 +122,17 @@ void Layout::resize()
 		}
 	}
 
+	realLeft = left;
+	realTop = top;
+
+	Layout* pp = getParent();
+	while(pp != NULL)
+	{
+		realLeft += pp->getLeft();
+		realTop += pp->getTop();
+		pp = pp->getParent();
+	}
+
 	update();
 }
 
@@ -166,21 +151,11 @@ void Layout::updateFocus()
 	int mouseX = -1;
 	int mouseY = -1;
 	SDL_GetMouseState( &mouseX, &mouseY );
-	int ml = 0;
-	int mt = 0;
 
-	Layout* pp = getParent();
-	while(pp != NULL)
-	{
-		ml += pp->getLeft();
-		mt += pp->getTop();
-		pp = pp->getParent();
-	}
+	mouseX -= realLeft;
+	mouseY -= realTop;
 
-	mouseX -= ml;
-	mouseY -= mt;
-
-	if(mouseX >= left && mouseX < left+w && mouseY >= top && mouseY < top+h)
+	if(mouseX >= 0 && mouseX < w && mouseY >= 0 && mouseY < h)
 	{
 		if(!focused) focused = true;
 	}
