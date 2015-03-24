@@ -2,11 +2,11 @@
 #include <stdio.h>
 #include <math.h> 
 
-
-#include "view.h"
-#include "graphics.h"
+#include "events.h"
 #include "layout.h"
 #include "utilities.h"
+#include "view.h"
+
 
 void init();
 void close();
@@ -19,8 +19,7 @@ SDL_Surface *screen = NULL;
 int screenWidth = 640;
 int screenHeight = 480;
 
-Graphics* canvas;
-
+Events* events;
 Layout* baseLayout;// = new Layout();
 
 bool quit = false;
@@ -66,14 +65,6 @@ void render()
     //SDL_RenderDrawLine(image, amouseX, amouseX, mouseX, mouseY);
     //setPixel(image, mouseX, mouseY, 255, 0, 0);
 
-
-    if(mousePressed)
-    {   
-        //printf("%i %i %i %i\n", amouseX, amouseY, mouseX, mouseY);
-        canvas->stroke(5);
-        canvas->line(amouseX, amouseY, mouseX, mouseY);
-    }
-
     baseLayout->show();
     //image(screen, canvas,  screen->w/2, screen->h/2);
     SDL_BlitSurface(baseLayout->getSurface(), NULL, screen, NULL);
@@ -94,8 +85,8 @@ int main(int argc, char* argv[])
 
         screen = SDL_GetWindowSurface(window);
         SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 100, 100, 100));
-        canvas = new Graphics(200, 200);
-        canvas->background(220);
+
+        events = Events::Instance();
 
         baseLayout = new Layout();
         baseLayout->setStyle(baseLayout->Vertical); 
@@ -135,26 +126,20 @@ int main(int argc, char* argv[])
 
                 if( e.type == SDL_MOUSEBUTTONUP )
                 {
-                    mousePressed = false;
+                    events->mouseButton = e.button.button;
+                    events->mousePressed = false;
                 }
                 if( e.type == SDL_MOUSEBUTTONDOWN )
                 {
-                    mousePressed = true;
-                }
-
-                amouseX = mouseX; 
-                amouseY = mouseY;
-                if( e.type == SDL_MOUSEMOTION )
-                {
-                    mouseX = e.motion.x;
-                    mouseY = e.motion.y;
-                    /*
-                    amouseX = mouseX; 
-                    amouseY = mouseY;
-                    SDL_GetMouseState( &mouseX, &mouseY );
-                    */
+                    events->mouseButton = e.button.button;
+                    events->mousePressed = true;
                 }
             }
+
+            SDL_PumpEvents();
+            events->amouseX = events->mouseX; 
+            events->amouseY = events->mouseY;
+            SDL_GetMouseState( &events->mouseX, & events->mouseY);
 
             render();
 

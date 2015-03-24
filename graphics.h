@@ -31,9 +31,9 @@ public:
 	void stroke(Uint8 r, Uint8 g, Uint8 b);
 
 	Uint32 fillColor, strokeColor;
-
-private:
+	
 	int w, h;
+private:
 	SDL_Surface *surface;
 
 	Uint32 color(Uint8 g);

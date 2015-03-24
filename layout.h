@@ -15,6 +15,7 @@ public:
 	void resize();
 	void resize(int w, int h);
 	void show();
+	virtual void update();
 	virtual void redraw();
 	void updateFocus();
 

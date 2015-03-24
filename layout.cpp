@@ -148,7 +148,7 @@ void Layout::resize()
 		}
 	}
 
-	redraw();
+	update();
 }
 
 void Layout::resize(int _w, int _h)
@@ -175,10 +175,7 @@ void Layout::updateFocus()
 		ml += pp->getLeft();
 		mt += pp->getTop();
 		pp = pp->getParent();
-		//printf("%i %i %i %i\n", mouseX, mouseY, ml, mt);
 	}
-
-	//printf("%i %i %i %i\n", mouseX, mouseX, ml, mt);
 
 	mouseX -= ml;
 	mouseY -= mt;
@@ -202,7 +199,11 @@ void Layout::updateFocus()
 void Layout::show()
 {
 	updateFocus();
-	if(focused) redraw();
+	if(focused){
+		update();
+		redraw();
+	} 
+
 	for(int i = 0; i < children.size(); i++)
 	{
 		Layout* l = children.at(i);
@@ -222,6 +223,10 @@ void Layout::show()
 
 }
 
+void Layout::update()
+{
+
+}
 void Layout::redraw()
 {
 	Uint32 col = backgroundColor;
