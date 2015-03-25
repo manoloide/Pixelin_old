@@ -114,6 +114,8 @@ int main(int argc, char* argv[])
         while( !quit )
         {
 
+            events->update();
+
             while( SDL_PollEvent( &e ) != 0 )
             {
                 if( e.window.event == SDL_WINDOWEVENT_RESIZED){
@@ -133,6 +135,11 @@ int main(int argc, char* argv[])
                 {
                     events->mouseButton = e.button.button;
                     events->mousePressed = true;
+                    events->mouseClicked = true;
+                }
+                if( e.type == SDL_MOUSEWHEEL)
+                {
+                    events->mouseWheel = e.wheel.y;
                 }
             }
 
@@ -144,7 +151,7 @@ int main(int argc, char* argv[])
             render();
 
             SDL_UpdateWindowSurface( window );
-            SDL_Delay(2);
+            SDL_Delay(20);
         }
     }
 

@@ -19,6 +19,7 @@ public:
 	void redraw();
 
 private:
+	int scale;
 	int posx, posy;
 	Graphics* canvas;
 	Events* events;

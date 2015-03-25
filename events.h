@@ -5,9 +5,10 @@ class Events
 {
 public:
 	static Events* Instance();
+	void update();
 
-	int mouseButton;
-	bool mousePressed;
+	int mouseButton, mouseWheel;
+	bool mouseClicked, mousePressed;
 	int amouseX, amouseY;
 	int mouseX, mouseY;
 protected:

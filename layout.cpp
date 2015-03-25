@@ -205,11 +205,18 @@ void Layout::update()
 void Layout::redraw()
 {
 	Uint32 col = backgroundColor;
+	SDL_FillRect(surface, NULL, backgroundColor);
 	if(focused){
 		col = 0xFFFF0000;
+		SDL_Rect rect = {0, 0, getWidth(), 1};
+		SDL_FillRect(surface, &rect, col);
+		rect = {0, getHeight()-1, getWidth(), 1};
+		SDL_FillRect(surface, &rect, col);
+		rect = {0, 0, 1, getHeight()};
+		SDL_FillRect(surface, &rect, col);
+		rect = {getWidth()-1, 0, 1, getHeight()};
+		SDL_FillRect(surface, &rect, col);
 	}
-
-	SDL_FillRect(surface, NULL, col);
 }
 
 void Layout::addChild(Layout* child){
