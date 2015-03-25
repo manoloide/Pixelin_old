@@ -4,12 +4,12 @@ View::View(Layout* _parent) : Layout(_parent)
 {
 	events = Events::Instance();
 	setBackgroundColor(0x494E4A);
-	canvas = new Graphics(20, 20);
+	canvas = new Graphics(40, 40);
 	canvas->background(240);
 
-	scale = 10; 
-	posx = 200;//-canvas->w/2;
-	posy = 200;//-canvas->h/2;
+	scale = 4; 
+	posx = 10;//-canvas->w/2;
+	posy = 10;//-canvas->h/2;
 }
 
 void View::update()
@@ -19,17 +19,30 @@ void View::update()
 		posx += events->mouseX-events->amouseX;
 		posy += events->mouseY-events->amouseY;
 	}
-	if(events->mousePressed && events->mouseButton == SDL_BUTTON_LEFT)
+	if(events->mousePressed)
 	{
 		int amx = events->amouseX-posx-realLeft;
 		int amy = events->amouseY-posy-realTop;
 		int mx = events->mouseX-posx-realLeft;
 		int my = events->mouseY-posy-realTop;
-		canvas->line(amx/scale, amy/scale, mx/scale, my/scale);
+		if(events->mouseButton == SDL_BUTTON_LEFT)
+		{
+			canvas->stroke(10);
+			canvas->line(amx/scale, amy/scale, mx/scale, my/scale);
+		}
+		if(events->mouseButton == SDL_BUTTON_RIGHT)
+		{
+			canvas->stroke(250);
+			canvas->line(amx/scale, amy/scale, mx/scale, my/scale);
+		}
 	}
-		
-	scale += events->mouseWheel;
-	if(scale < 1) scale = 1;
+
+	if(events->mouseWheel != 0)
+	{	
+		int ascale = scale;
+		scale += events->mouseWheel;
+		if(scale < 1) scale = 1;
+	}
 }
 
 void View::redraw()
@@ -38,7 +51,12 @@ void View::redraw()
 	Uint32 col = getBackgroundColor();
 	SDL_FillRect(getSurface(), NULL, col);
 
-	SDL_Rect ori = {0,0,canvas->w,canvas->h}; 
-	SDL_Rect location = {posx,posy,canvas->w*scale,canvas->h*scale}; 
-	SDL_BlitScaled(canvas->get(), &ori, getSurface(), &location);
+	SDL_Surface* aux = SDL_CreateRGBSurface(0, canvas->w*scale, canvas->h*scale, 32, 0, 0, 0, 0);
+
+	SDL_Rect location = {0, 0, canvas->w*scale, canvas->h*scale}; 
+	SDL_BlitScaled(canvas->get(), NULL, aux, &location); 
+	location = {posx, posy, canvas->w*scale, canvas->h*scale}; 
+	SDL_BlitSurface(aux, NULL, getSurface(), &location);
+
+	SDL_FreeSurface(aux);
 }

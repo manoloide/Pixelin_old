@@ -1,5 +1,5 @@
-#ifndef VIEW_H
-#define VIEW_H
+#ifndef COLOREDITOR_H
+#define COLOREDITOR_H
 
 #include "SDL2/SDL.h"
 
@@ -8,20 +8,18 @@
 #include "layout.h"
 
 
-class View : public Layout
+class ColorEditor : public Layout
 {
 public:
-	View(Layout* _parent);
-	~View();
+	ColorEditor(Layout* _parent);
+	~ColorEditor();
 
 	void update();
 	void redraw();
 
 private:
-	int scale;
-	int posx, posy;
-	Graphics* canvas;
 	Events* events;
+	Uint32 colorSelect;
 };
 
 #endif

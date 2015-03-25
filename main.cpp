@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <math.h> 
 
+#include "coloreditor.h"
 #include "events.h"
 #include "layout.h"
 #include "utilities.h"
@@ -103,7 +104,11 @@ int main(int argc, char* argv[])
         h1->setMaxWidth(80);
         View* h2 =  new View(v3);
         Layout* h3 =  new Layout(v3);
+        h3->setStyle(baseLayout->Vertical); 
         h3->setMaxWidth(180);
+
+        ColorEditor* colorEditor = new ColorEditor(h3);
+        colorEditor->setMaxHeight(90);
 
 
         baseLayout->resize(screenWidth, screenHeight);
