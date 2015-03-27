@@ -4,9 +4,9 @@
 #include "SDL2/SDL.h"
 
 #include "events.h"
-#include "graphics.h"
 #include "layout.h"
-
+#include "gui.h"
+#include "graphics.h"
 
 class ColorEditor : public Layout
 {
@@ -20,6 +20,7 @@ public:
 private:
 	Events* events;
 	Uint32 colorSelect;
+	Slide *red, *green, *blue;
 };
 
 #endif
