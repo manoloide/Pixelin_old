@@ -29,8 +29,15 @@ void View::update()
 		int my = events->mouseY-posy-realTop;
 		if(events->mouseButton == SDL_BUTTON_LEFT)
 		{
-			canvas->strokeColor = global->colorSelect;
-			canvas->line(amx/scale, amy/scale, mx/scale, my/scale);
+			if(events->Ctrl && mx >= 0 && mx/scale < canvas->w && my >= 0 && my/scale < canvas->h)
+			{
+				global->colorSelect = canvas->getPixel(mx/scale, my/scale);
+			}
+			else
+			{
+				canvas->strokeColor = global->colorSelect;
+				canvas->line(amx/scale, amy/scale, mx/scale, my/scale);
+			}
 		}
 		/*
 		if(events->mouseButton == SDL_BUTTON_RIGHT)

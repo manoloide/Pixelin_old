@@ -23,7 +23,7 @@ private:
 	Events* events;
 	Global* global;
 
-	Uint32* colorSelect;
+	Uint32 colorSelect;
 	Slide *sred, *sgreen, *sblue;
 };
 

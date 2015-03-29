@@ -17,6 +17,13 @@ SDL_Surface* Graphics::get()
 	return surface;
 }
 
+Uint32 Graphics::getPixel(int x, int y)
+{	
+    Uint32 *pixels = (Uint32 *)surface->pixels;
+    return pixels[ ( y * w ) + x ];
+
+}
+
 void Graphics::setPixel(int x, int y, Uint32 color)
 {
 

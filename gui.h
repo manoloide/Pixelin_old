@@ -23,6 +23,7 @@ public:
 	void draw(int mx, int my);
 
 	//int getValue() const {return val;};
+	void setVal(int v);
 
 	int min, max, val, pos;
 };

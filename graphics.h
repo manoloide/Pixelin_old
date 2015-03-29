@@ -14,8 +14,10 @@ public:
 	//void resize(int _w, int _h);
 
 	SDL_Surface* get();
+	
+	Uint32 getPixel(int x, int y);
 	void setPixel(int x, int y, Uint32 color);
-	//getPixel();
+	
 	void line(int x0, int y0, int x1, int y1);
 	//void rect();
 

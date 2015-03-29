@@ -64,3 +64,9 @@ void Slide::draw(int mx, int my)
 	background = {x+pos, y, h, h};
 	SDL_FillRect(layout->getSurface(), &background, col);
 }
+
+void Slide::setVal(int v)
+{
+	val = constrain(v, min, max);
+	pos = map(val, min, max, 0, w-h);
+}
