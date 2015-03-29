@@ -7,6 +7,7 @@
 #include "layout.h"
 #include "gui.h"
 #include "graphics.h"
+#include "utilities.h"
 
 class ColorEditor : public Layout
 {

@@ -21,6 +21,8 @@ void ColorEditor::update()
 	red->update(mx, my);
 	green->update(mx, my);
 	blue->update(mx, my);	
+
+	colorSelect = color(red->val, green->val, blue->val);
 }
 
 void ColorEditor::redraw()
