@@ -5,6 +5,7 @@
 
 #include "events.h"
 #include "layout.h"
+#include "global.h"
 #include "gui.h"
 #include "graphics.h"
 #include "utilities.h"
@@ -20,8 +21,10 @@ public:
 
 private:
 	Events* events;
-	Uint32 colorSelect;
-	Slide *red, *green, *blue;
+	Global* global;
+
+	Uint32* colorSelect;
+	Slide *sred, *sgreen, *sblue;
 };
 
 #endif

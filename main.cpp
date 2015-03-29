@@ -4,6 +4,7 @@
 
 #include "coloreditor.h"
 #include "events.h"
+#include "global.h"
 #include "layout.h"
 #include "utilities.h"
 #include "view.h"
@@ -21,6 +22,7 @@ int screenWidth = 640;
 int screenHeight = 480;
 
 Events* events;
+Global* global;
 Layout* baseLayout;// = new Layout();
 
 bool quit = false;
@@ -88,6 +90,7 @@ int main(int argc, char* argv[])
         SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 100, 100, 100));
 
         events = Events::Instance();
+        global = Global::Instance();
 
         baseLayout = new Layout();
         baseLayout->setStyle(baseLayout->Vertical); 
@@ -105,7 +108,8 @@ int main(int argc, char* argv[])
         View* h2 =  new View(v3);
         Layout* h3 =  new Layout(v3);
         h3->setStyle(baseLayout->Vertical); 
-        h3->setMaxWidth(180);
+        h3->setMaxWidth(210);
+        h3->setMinWidth(210);
 
         ColorEditor* colorEditor = new ColorEditor(h3);
         colorEditor->setMaxHeight(90);
@@ -113,6 +117,7 @@ int main(int argc, char* argv[])
 
         baseLayout->resize(screenWidth, screenHeight);
         baseLayout->show();
+
 
         SDL_Event e;
 

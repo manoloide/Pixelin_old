@@ -21,7 +21,7 @@ Layout::~Layout()
 void Layout::init()
 {
 	surface = SDL_CreateRGBSurface(0, 200, 200, 32, 0, 0, 0, 0);
-	setBackgroundColor(SDL_MapRGB(surface->format, (rand() % 256), (rand() % 256), (rand() % 256)));
+	setBackgroundColor(color(100+rand()%20));
 
 	setLeft(0);
 	setTop(0);
@@ -57,8 +57,6 @@ void Layout::resize()
 			int rest = w;
 			for (int i = 0; i < c; i++) {
 				Layout* l = children.at(i);
-				l->setHeight(h);
-				l->setTop(0);
 
 				if (l->getMaxWidth() != 0 && newWidth > l->getMaxWidth()) {
 					l->setWidth(l->getMaxWidth());
@@ -75,6 +73,8 @@ void Layout::resize()
 				int ap = 0;
 				for (int i = 0; i < c; i++) {
 					Layout* l = children.at(i);
+					l->setHeight(h);
+					l->setTop(0);
 					l->setLeft(ap);
 					if (l->getWidth() == 0) {
 						l->setWidth(newWidth);
@@ -90,8 +90,6 @@ void Layout::resize()
 			int rest = h;
 			for (int i = 0; i < c; i++) {
 				Layout* l = children.at(i);
-				l->setWidth(w);
-				l->setLeft(0);
 
 				if (l->getMaxHeight() != 0 && newHeight > l->getMaxHeight()) {
 					l->setHeight(l->getMaxHeight());
@@ -108,6 +106,8 @@ void Layout::resize()
 				int ap = 0;
 				for (int i = 0; i < c; i++) {
 					Layout* l = children.at(i);
+					l->setWidth(w);
+					l->setLeft(0);
 					l->setTop(ap);
 					if (l->getHeight() == 0) {
 						l->setHeight(newHeight);

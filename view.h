@@ -4,6 +4,7 @@
 #include "SDL2/SDL.h"
 
 #include "events.h"
+#include "global.h"
 #include "graphics.h"
 #include "layout.h"
 
@@ -22,6 +23,7 @@ private:
 	int posx, posy;
 	Graphics* canvas;
 	Events* events;
+	Global* global;
 };
 
 #endif

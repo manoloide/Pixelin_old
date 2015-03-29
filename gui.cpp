@@ -18,7 +18,7 @@ Slide::Slide(Layout* _layout, int _x, int _y, int _w, int _h, int _min, int _max
 	max = _max;
 	val = _val;
 
-	pos = 0;
+	pos = map(val, min, max, 0, w-h);
 }
 
 
@@ -53,17 +53,13 @@ void Slide::update(int mx, int my)
 
 void Slide::draw(int mx, int my)
 {
-	Uint32 col = color(255, 0, 0);
-	if(on)
-	{
-		col = color(255, 60, 60);
-	}
+	Uint32 col = color(100);
 	SDL_Rect background = {x, y, w, h};
 	SDL_FillRect(layout->getSurface(), &background, col);
-	col = color(255, 255, 0);
+	col = color(140);
 	if(moved)
 	{
-		col = color(255, 255, 120);
+		col = color(160);
 	}
 	background = {x+pos, y, h, h};
 	SDL_FillRect(layout->getSurface(), &background, col);

@@ -3,6 +3,8 @@
 
 #include "SDL2/SDL.h"
 
+#include "utilities.h"
+
 class Graphics 
 {
 public:
@@ -35,9 +37,6 @@ public:
 	int w, h;
 private:
 	SDL_Surface *surface;
-
-	Uint32 color(Uint8 g);
-	Uint32 color(Uint8 r, Uint8 g, Uint8 b);
 };
 
 #endif

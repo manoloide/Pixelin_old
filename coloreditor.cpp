@@ -4,13 +4,15 @@
 ColorEditor::ColorEditor(Layout* _parent) : Layout(_parent)
 {
 	events = Events::Instance();
-	setBackgroundColor(0x29352D);
+	global = Global::Instance();
+	setBackgroundColor(color(50));
 
-	red = new Slide(this, 80, 20, getWidth()-220, 10, 0, 255, 0);
-	green = new Slide(this, 80, 40, getWidth()-220, 10, 0, 255, 0);
-	blue = new Slide(this, 80, 60, getWidth()-220, 10, 0, 255, 0);
+	colorSelect = &global->colorSelect;//color((rand() % 256), (rand() % 256), (rand() % 256));
+	//printf("%i %i %i %i\n", red(colorSelect), getParent()->getWidth(), getMinWidth(), getMaxWidth());
+	sred = new Slide(this, 80, 20, getWidth()-180, 10, 0, 255, red(*colorSelect));
+	sgreen = new Slide(this, 80, 40, getWidth()-180, 10, 0, 255, green(*colorSelect));
+	sblue = new Slide(this, 80, 60, getWidth()-180, 10, 0, 255, blue(*colorSelect));
 
-	colorSelect = SDL_MapRGB(getSurface()->format, (rand() % 256), (rand() % 256), (rand() % 256));
 }
 
 void ColorEditor::update()
@@ -18,11 +20,11 @@ void ColorEditor::update()
 	int mx = events->mouseX-realLeft;
 	int my = events->mouseY-realTop;
 
-	red->update(mx, my);
-	green->update(mx, my);
-	blue->update(mx, my);	
+	sred->update(mx, my);
+	sgreen->update(mx, my);
+	sblue->update(mx, my);	
 
-	colorSelect = color(red->val, green->val, blue->val);
+	*colorSelect = color(sred->val, sgreen->val, sblue->val);
 }
 
 void ColorEditor::redraw()
@@ -31,9 +33,9 @@ void ColorEditor::redraw()
 	SDL_FillRect(getSurface(), NULL, col);
 
 	SDL_Rect viewColor = {20, 20, 50, 50};
-	SDL_FillRect(getSurface(), &viewColor, colorSelect);
+	SDL_FillRect(getSurface(), &viewColor, *colorSelect);
 
-	red->draw(0, 0);
-	green->draw(0, 0);
-	blue->draw(0, 0);
+	sred->draw(0, 0);
+	sgreen->draw(0, 0);
+	sblue->draw(0, 0);
 }

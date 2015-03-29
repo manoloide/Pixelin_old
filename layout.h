@@ -2,6 +2,7 @@
 #define LAYOUT_H
 
 #include "SDL2/SDL.h"
+#include "utilities.h"
 #include <vector>
 
 class Layout

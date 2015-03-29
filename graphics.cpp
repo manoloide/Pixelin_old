@@ -98,7 +98,7 @@ void Graphics::fill(Uint8 r, Uint8 g, Uint8 b)
 	fillColor = color(r, g, b);
 }
 void Graphics::fill(Uint8 g){
-	fill(g, g, g);
+	fillColor = color(g);
 }
 
 void Graphics::stroke(Uint8 r, Uint8 g, Uint8 b)
@@ -108,15 +108,5 @@ void Graphics::stroke(Uint8 r, Uint8 g, Uint8 b)
 
 void Graphics::stroke(Uint8 g)
 {
-	stroke(g, g, g);
-}
-
-Uint32 Graphics::color(Uint8 r, Uint8 g, Uint8 b)
-{
-	return SDL_MapRGB(surface->format, r, g, b);
-}
-
-Uint32 Graphics::color(Uint8 g)
-{
-	return color(g, g, g);
+	strokeColor = color(g);
 }

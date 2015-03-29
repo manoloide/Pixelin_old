@@ -3,6 +3,8 @@
 View::View(Layout* _parent) : Layout(_parent)
 {
 	events = Events::Instance();
+	global = Global::Instance();
+
 	setBackgroundColor(0x494E4A);
 	canvas = new Graphics(40, 40);
 	canvas->background(240);
@@ -27,14 +29,16 @@ void View::update()
 		int my = events->mouseY-posy-realTop;
 		if(events->mouseButton == SDL_BUTTON_LEFT)
 		{
-			canvas->stroke(10);
+			canvas->strokeColor = global->colorSelect;
 			canvas->line(amx/scale, amy/scale, mx/scale, my/scale);
 		}
+		/*
 		if(events->mouseButton == SDL_BUTTON_RIGHT)
 		{
 			canvas->stroke(250);
 			canvas->line(amx/scale, amy/scale, mx/scale, my/scale);
 		}
+		*/
 	}
 
 	if(events->mouseWheel != 0)
