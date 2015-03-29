@@ -7,6 +7,7 @@ public:
 	static Events* Instance();
 	void update();
 
+	bool Ctrl, Alt, Shift;
 	int mouseButton, mouseWheel;
 	bool mouseClicked, mousePressed;
 	int amouseX, amouseY;

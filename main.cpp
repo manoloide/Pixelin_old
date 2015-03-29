@@ -128,20 +128,56 @@ int main(int argc, char* argv[])
 
             while( SDL_PollEvent( &e ) != 0 )
             {
-                if( e.window.event == SDL_WINDOWEVENT_RESIZED){
+                if(e.window.event == SDL_WINDOWEVENT_RESIZED){
                     resize(e.window.data1, e.window.data2); 
                 }
-                if( e.type == SDL_QUIT )
+                if(e.type == SDL_QUIT)
                 {
                     quit = true;
                 }
 
-                if( e.type == SDL_MOUSEBUTTONUP )
+                if(e.type == SDL_KEYDOWN)
+                {
+                    if(e.key.keysym.sym == SDLK_ESCAPE)
+                    {
+                        //quit = true;
+                    }
+
+                    if(e.key.keysym.sym == SDLK_LALT)
+                    {
+                        events->Alt = true;
+                    }
+                    if(e.key.keysym.sym == SDLK_LCTRL)
+                    {
+                        events->Ctrl = true;
+                    }
+                    if(e.key.keysym.sym == SDLK_LSHIFT)
+                    {
+                        events->Shift = true;
+                    }
+                }
+                if(e.type == SDL_KEYUP)
+                {
+                    if(e.key.keysym.sym == SDLK_LALT)
+                    {
+                        events->Alt = false;
+                    }
+                    if(e.key.keysym.sym == SDLK_LCTRL)
+                    {
+                        events->Ctrl = false;
+                    }
+                    if(e.key.keysym.sym == SDLK_LSHIFT)
+                    {
+                        events->Shift = false;
+                    }
+                }
+
+                if(e.type == SDL_MOUSEBUTTONUP)
                 {
                     events->mouseButton = e.button.button;
                     events->mousePressed = false;
                 }
-                if( e.type == SDL_MOUSEBUTTONDOWN )
+                if(e.type == SDL_MOUSEBUTTONDOWN)
                 {
                     events->mouseButton = e.button.button;
                     events->mousePressed = true;

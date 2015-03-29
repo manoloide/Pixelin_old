@@ -11,6 +11,8 @@ Events* Events::Instance ()
 }
 Events::Events()
 {
+	Ctrl = Alt = Shift = false;
+
 	mouseButton = 0;
 	mouseWheel = 0;
 	mousePressed = false;
