@@ -9,6 +9,8 @@
 #include "layout.h"
 #include "widget.h"
 
+#include <vector>
+
 
 class View : public Widget
 {

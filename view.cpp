@@ -1,5 +1,12 @@
 #include "view.h"
 
+
+struct Pixel
+{	
+	int x;
+	int y;
+};
+
 View::View(Layout* _parent) : Widget(_parent)
 {
 	setBackgroundColor(0x494E4A);
@@ -24,16 +31,162 @@ void View::update()
 		int amy = events->amouseY-posy-realTop;
 		int mx = events->mouseX-posx-realLeft;
 		int my = events->mouseY-posy-realTop;
-		if(events->mouseButton == SDL_BUTTON_LEFT)
+
+		if(global->tool == 0)
 		{
-			if(events->Ctrl && mx >= 0 && mx/scale < canvas->w && my >= 0 && my/scale < canvas->h)
+			if(events->mouseButton == SDL_BUTTON_LEFT)
 			{
-				global->colorSelect = canvas->getPixel(mx/scale, my/scale);
+				if(events->Ctrl && mx >= 0 && mx/scale < canvas->w && my >= 0 && my/scale < canvas->h)
+				{
+					global->colorSelect = canvas->getPixel(mx/scale, my/scale);
+				}
+				else
+				{
+					canvas->strokeColor = global->colorSelect;
+					canvas->line(amx/scale, amy/scale, mx/scale, my/scale);
+				}
+
 			}
-			else
+		}
+		else if(global->tool == 1)
+		{
+			if(events->mouseButton == SDL_BUTTON_LEFT && events->mouseClicked)
 			{
-				canvas->strokeColor = global->colorSelect;
-				canvas->line(amx/scale, amy/scale, mx/scale, my/scale);
+				int x = mx/scale;
+				int y = my/scale;
+				bool continguous = true;
+				int tolerance = 0; //0-255 
+				Uint32 colNew = global->colorSelect;
+				Uint32 colSus = canvas->getPixel(x, y);
+
+				if(continguous)
+				{
+					std::vector<Pixel> pixels, analyzed, replace;
+					pixels.push_back({x, y});
+
+					bool finish = false;
+
+					while(!finish)
+					{
+						for(int i = 0; i < pixels.size(); i++)
+						{
+							Pixel ap = pixels[i];
+							Uint32 pix = canvas->getPixel(ap.x, ap.y);
+							int dr = abs(red(pix)-red(colSus));
+							int dg = abs(green(pix)-green(colSus));
+							int db = abs(blue(pix)-blue(colSus));
+							int dif = (dr+dg+db)/3;
+							if(dif <= tolerance)
+							{
+								replace.push_back(ap);
+
+								if(ap.x-1 >= 0)
+								{
+									Pixel aux = {ap.x-1, ap.y};
+									bool exist = false;
+									for(int j = 0; j < analyzed.size(); j++)
+									{
+										Pixel ana = analyzed[j];
+										if(aux.x == ana.x && aux.y == ana.y)
+										{
+											exist = true;
+											j == analyzed.size();
+										}
+									}
+									if(!exist)
+									{
+										pixels.push_back(aux);
+									}
+								}
+								if(ap.x+1 < canvas->w)
+								{
+									Pixel aux = {ap.x+1, ap.y};
+									bool exist = false;
+									for(int j = 0; j < analyzed.size(); j++)
+									{
+										Pixel ana = analyzed[j];
+										if(aux.x == ana.x && aux.y == ana.y)
+										{
+											exist = true;
+											j == analyzed.size();
+										}
+									}
+									if(!exist)
+									{
+										pixels.push_back(aux);
+									}
+								}
+								if(ap.y-1 >= 0){
+									Pixel aux = {ap.x, ap.y-1};
+									bool exist = false;
+									for(int j = 0; j < analyzed.size(); j++)
+									{
+										Pixel ana = analyzed[j];
+										if(aux.x == ana.x && aux.y == ana.y)
+										{
+											exist = true;
+											j == analyzed.size();
+										}
+									}
+									if(!exist)
+									{
+										pixels.push_back(aux);
+									}
+								}
+
+								if(ap.y+1 < canvas->h){
+									Pixel aux = {ap.x, ap.y+1};
+									bool exist = false;
+									for(int j = 0; j < analyzed.size(); j++)
+									{
+										Pixel ana = analyzed[j];
+										if(aux.x == ana.x && aux.y == ana.y)
+										{
+											exist = true;
+											j == analyzed.size();
+										}
+									}
+									if(!exist)
+									{
+										pixels.push_back(aux);
+									}
+								}
+							}
+							analyzed.push_back(ap);
+							pixels.erase(pixels.begin() + i);
+						}
+						if(pixels.size() == 0)
+						{
+							finish = true;
+						}
+					}
+
+					printf("%i\n", analyzed.size());
+
+					for(int i = 0; i < replace.size(); i++)
+					{
+						Pixel ap = replace[i];
+						canvas->setPixel(ap.x, ap.y, colNew);	
+					}
+				}
+				else
+				{
+					for(int j = 0; j < canvas->h; j++)
+					{
+						for(int i = 0; i < canvas->w; i++)
+						{
+							Uint32 pix = canvas->getPixel(i, j);
+							int dr = abs(red(pix)-red(colSus));
+							int dg = abs(green(pix)-green(colSus));
+							int db = abs(blue(pix)-blue(colSus));
+							int dif = (dr+dg+db)/3;
+							if(dif <= tolerance)
+							{
+								canvas->setPixel(i, j, colNew);		
+							}
+						}
+					}
+				}
 			}
 		}
 		/*
