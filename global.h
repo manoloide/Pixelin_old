@@ -10,6 +10,7 @@ public:
 	static Global* Instance();
 
 	bool allRender;
+	int tool;
 	Uint32 colorSelect;
 
 protected:

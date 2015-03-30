@@ -7,6 +7,7 @@
 #include "global.h"
 #include "layout.h"
 #include "swatches.h"
+#include "tools.h"
 #include "utilities.h"
 #include "view.h"
 
@@ -108,8 +109,8 @@ int main(int argc, char* argv[])
         Layout* v4 = new Layout(baseLayout);
         v4->setMaxHeight(28);
 
-        Layout* h1 =  new Layout(v3);
-        h1->setMaxWidth(80);
+        Tools* tools =  new Tools(v3);
+        tools->setMaxWidth(80);
         View* h2 =  new View(v3);
         Layout* h3 =  new Layout(v3);
         h3->setStyle(baseLayout->Vertical); 

@@ -24,7 +24,6 @@ void Swatches::update()
 
 		int v = (mx/tt)+(my/tt)*(cc);
 		if(v >= 0 && v < 40 && (mx/tt) < cc){
-			global->allRender = true;
 			global->colorSelect = colors[v];
 		}
 	}
