@@ -9,6 +9,7 @@ class Global
 public:
 	static Global* Instance();
 
+	bool allRender;
 	Uint32 colorSelect;
 
 protected:

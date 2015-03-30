@@ -19,8 +19,8 @@ void render();
 
 SDL_Window *window = NULL;
 SDL_Surface *screen = NULL;
-int screenWidth = 640;
-int screenHeight = 480;
+int screenWidth = 800;
+int screenHeight = 600;
 
 Events* events;
 Global* global;
@@ -68,7 +68,11 @@ void render()
     //SDL_RenderDrawLine(image, amouseY, amouseY, mouseX, mouseY);
     //SDL_RenderDrawLine(image, amouseX, amouseX, mouseX, mouseY);
     //setPixel(image, mouseX, mouseY, 255, 0, 0);
-
+    if(global->allRender)
+    {
+        global->allRender = false;    
+    }
+    
     baseLayout->show();
     //image(screen, canvas,  screen->w/2, screen->h/2);
     SDL_BlitSurface(baseLayout->getSurface(), NULL, screen, NULL);
@@ -120,7 +124,6 @@ int main(int argc, char* argv[])
         baseLayout->resize(screenWidth, screenHeight);
         baseLayout->show();
 
-        printf("%i\n", colorEditor->getWidth());
         SDL_Event e;
 
         while( !quit )

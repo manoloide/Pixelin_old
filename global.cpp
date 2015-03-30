@@ -11,5 +11,6 @@ Global* Global::Instance ()
 }
 Global::Global()
 {
+	allRender = false;
 	Uint32 colorSelect = color(0);
 }
