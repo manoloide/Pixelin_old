@@ -7,9 +7,10 @@
 #include "global.h"
 #include "graphics.h"
 #include "layout.h"
+#include "widget.h"
 
 
-class View : public Layout
+class View : public Widget
 {
 public:
 	View(Layout* _parent);
@@ -22,8 +23,6 @@ private:
 	int scale;
 	int posx, posy;
 	Graphics* canvas;
-	Events* events;
-	Global* global;
 };
 
 #endif

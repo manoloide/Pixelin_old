@@ -1,10 +1,7 @@
 #include "view.h"
 
-View::View(Layout* _parent) : Layout(_parent)
+View::View(Layout* _parent) : Widget(_parent)
 {
-	events = Events::Instance();
-	global = Global::Instance();
-
 	setBackgroundColor(0x494E4A);
 	canvas = new Graphics(40, 40);
 	canvas->background(240);

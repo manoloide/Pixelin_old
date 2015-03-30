@@ -6,6 +6,7 @@
 #include "events.h"
 #include "global.h"
 #include "layout.h"
+#include "swatches.h"
 #include "utilities.h"
 #include "view.h"
 
@@ -108,17 +109,18 @@ int main(int argc, char* argv[])
         View* h2 =  new View(v3);
         Layout* h3 =  new Layout(v3);
         h3->setStyle(baseLayout->Vertical); 
-        h3->setMaxWidth(210);
-        h3->setMinWidth(210);
+        h3->setMaxWidth(280);
+        h3->setMinWidth(280);
 
         ColorEditor* colorEditor = new ColorEditor(h3);
         colorEditor->setMaxHeight(90);
-
+        Swatches* swatches = new Swatches(h3);
+        swatches->setMaxHeight(90);
 
         baseLayout->resize(screenWidth, screenHeight);
         baseLayout->show();
 
-
+        printf("%i\n", colorEditor->getWidth());
         SDL_Event e;
 
         while( !quit )

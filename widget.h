@@ -1,4 +1,4 @@
-#ifndef WDIGET_H
+#ifndef WIDGET_H
 #define WIDGET_H
 
 #include "SDL2/SDL.h"

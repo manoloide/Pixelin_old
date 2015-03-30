@@ -39,7 +39,7 @@ void Layout::init()
 		parent->addChild(this);
 	}
 	
-	resize();
+	//resize();
 }
 
 void Layout::resize()
@@ -57,6 +57,10 @@ void Layout::resize()
 			int rest = w;
 			for (int i = 0; i < c; i++) {
 				Layout* l = children.at(i);
+				if(getMaxHeight() < l->getMaxHeight())
+				{
+					l->setMaxHeight(getMaxHeight());
+				}
 
 				if (l->getMaxWidth() != 0 && newWidth > l->getMaxWidth()) {
 					l->setWidth(l->getMaxWidth());
