@@ -1,10 +1,8 @@
 #include "coloreditor.h"
 
 
-ColorEditor::ColorEditor(Layout* _parent) : Layout(_parent)
+ColorEditor::ColorEditor(Layout* _parent) : Widget(_parent)
 {
-	events = Events::Instance();
-	global = Global::Instance();
 	setBackgroundColor(color(50));
 
 	//color((rand() % 256), (rand() % 256), (rand() % 256));
@@ -20,7 +18,7 @@ ColorEditor::ColorEditor(Layout* _parent) : Layout(_parent)
 void ColorEditor::update()
 {
 	colorSelect = global->colorSelect;
-	
+
 	sred->setVal(red(colorSelect));
 	sgreen->setVal(green(colorSelect));
 	sblue->setVal(blue(colorSelect));
