@@ -189,6 +189,14 @@ void View::update()
 				}
 			}
 		}
+		else if(global->tool == 2)
+		{
+			for(int j = 0; j < canvas->h; j++){
+				for(int i = 0; i < canvas->w; i++){
+					canvas->setPixel(i, j, lerpColor(color(255, 0, 0), color(0, 0,255), i*1./canvas->w));
+				}
+			}
+		}
 		/*
 		if(events->mouseButton == SDL_BUTTON_RIGHT)
 		{
@@ -208,7 +216,7 @@ void View::update()
 
 void View::redraw()
 {
-
+	
 	Uint32 col = getBackgroundColor();
 	SDL_FillRect(getSurface(), NULL, col);
 

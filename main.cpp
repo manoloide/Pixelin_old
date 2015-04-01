@@ -11,7 +11,6 @@
 #include "utilities.h"
 #include "view.h"
 
-
 void init();
 void close();
 void resize();

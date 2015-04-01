@@ -3,9 +3,14 @@
 
 #include "SDL2/SDL.h"
 
+/*
 int min(int, int);
 int max(int, int);
 int constrain(int, int, int);
+*/
+float min(float, float);
+float max(float, float);
+float constrain(float, float, float);
 
 float map(float, float, float, float, float);
 
@@ -20,5 +25,7 @@ Uint8 red(Uint32);
 Uint8 green(Uint32);
 Uint8 blue(Uint32);
 Uint8 alpha(Uint32);
+
+Uint32 lerpColor(Uint32, Uint32, float);
 
  #endif

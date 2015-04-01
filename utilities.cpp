@@ -1,5 +1,6 @@
 #include "utilities.h"
 
+/*
 int min(int v1, int v2){
 	int aux = v1;
 	if(aux > v2){
@@ -16,7 +17,28 @@ int max(int v1, int v2){
 	return aux;
 }
 
-int constrain(int v, int mn, int mx){
+int constrain(float v, float mn, float mx){
+	return min(mx, max(v, mn));
+}
+*/
+
+float min(float v1, float v2){
+	float aux = v1;
+	if(aux > v2){
+		aux = v2;
+	}
+	return aux;
+}
+
+float max(float v1, float v2){
+	float aux = v1;
+	if(aux < v2){
+		aux = v2;
+	}
+	return aux;
+}
+
+float constrain(float v, float mn, float mx){
 	return min(mx, max(v, mn));
 }
 
@@ -62,4 +84,13 @@ Uint8 alpha(Uint32 col){
 	Uint32 temp =  col&0xFF000000;
 	temp =  temp>>24;
 	return (Uint8) temp;
+}
+
+Uint32 lerpColor(Uint32 c1, Uint32 c2, float v){
+	v = constrain(v, 0, 1);
+	int r = map(v, 0, 1, red(c1), red(c2));
+	int g = map(v, 0, 1, green(c1), green(c2));
+	int b = map(v, 0, 1, blue(c1), blue(c2));
+
+	return color(r, g, b);
 }
