@@ -125,6 +125,11 @@ int main(int argc, char* argv[])
 
             events->update();
 
+            SDL_PumpEvents();
+            events->amouseX = events->mouseX; 
+            events->amouseY = events->mouseY;
+            SDL_GetMouseState( &events->mouseX, & events->mouseY);
+
             while( SDL_PollEvent( &e ) != 0 )
             {
                 if(e.window.event == SDL_WINDOWEVENT_RESIZED){
@@ -182,6 +187,9 @@ int main(int argc, char* argv[])
                     events->mouseButton = e.button.button;
                     events->mousePressed = true;
                     events->mouseClicked = true;
+
+                    events->cmouseX = events->mouseX;
+                    events->cmouseY = events->mouseY;
                 }
                 if( e.type == SDL_MOUSEWHEEL)
                 {
@@ -189,10 +197,6 @@ int main(int argc, char* argv[])
                 }
             }
 
-            SDL_PumpEvents();
-            events->amouseX = events->mouseX; 
-            events->amouseY = events->mouseY;
-            SDL_GetMouseState( &events->mouseX, & events->mouseY);
 
             render();
 

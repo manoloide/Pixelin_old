@@ -8,6 +8,7 @@ int min(int, int);
 int max(int, int);
 int constrain(int, int, int);
 */
+float dist(float, float, float, float);
 float min(float, float);
 float max(float, float);
 float constrain(float, float, float);

@@ -12,6 +12,7 @@ public:
 	bool mouseClicked, mousePressed, mouseReleased;
 	int amouseX, amouseY;
 	int mouseX, mouseY;
+	int cmouseX, cmouseY;
 protected:
 	Events();
 	Events(const Events & ) ;

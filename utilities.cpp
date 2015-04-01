@@ -21,6 +21,9 @@ int constrain(float v, float mn, float mx){
 	return min(mx, max(v, mn));
 }
 */
+float dist(float x1, float y1, float x2, float y2){
+	return sqrt(pow(x2-x1, 2)+pow(y2-y1, 2));
+}
 
 float min(float v1, float v2){
 	float aux = v1;
@@ -87,7 +90,8 @@ Uint8 alpha(Uint32 col){
 }
 
 Uint32 lerpColor(Uint32 c1, Uint32 c2, float v){
-	v = constrain(v, 0, 1);
+	if(v <= 0) return c1;
+	if(v >= 1) return c2;
 	int r = map(v, 0, 1, red(c1), red(c2));
 	int g = map(v, 0, 1, green(c1), green(c2));
 	int b = map(v, 0, 1, blue(c1), blue(c2));

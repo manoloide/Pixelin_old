@@ -25,12 +25,16 @@ void View::update()
 		posx += events->mouseX-events->amouseX;
 		posy += events->mouseY-events->amouseY;
 	}
+
+	int amx = events->amouseX-posx-realLeft;
+	int amy = events->amouseY-posy-realTop;
+	int mx = events->mouseX-posx-realLeft;
+	int my = events->mouseY-posy-realTop;
+	int cmx = events->cmouseX-posx-realLeft;
+	int cmy = events->cmouseY-posy-realTop;
+
 	if(events->mousePressed)
 	{
-		int amx = events->amouseX-posx-realLeft;
-		int amy = events->amouseY-posy-realTop;
-		int mx = events->mouseX-posx-realLeft;
-		int my = events->mouseY-posy-realTop;
 
 		if(global->tool == 0)
 		{
@@ -193,9 +197,19 @@ void View::update()
 	{
 		if(events->mouseReleased)
 		{
+			Uint32 c1 = global->colorSelect;
+			Uint32 c2 = color(240);
+
+			int x1 = cmx/scale;
+			int y1 = cmy/scale;
+			int x2 = mx/scale;
+			int y2 = my/scale;
+
+			float dd = dist(x1, y1, x2, y2);
 			for(int j = 0; j < canvas->h; j++){
 				for(int i = 0; i < canvas->w; i++){
-					canvas->setPixel(i, j, lerpColor(color(255, 0, 0), color(0, 0,255), i*1./canvas->w));
+					float vv = dist(i, j, x1, y1)/dd;
+					canvas->setPixel(i, j, lerpColor(c1, c2, vv));
 				}
 			}
 
