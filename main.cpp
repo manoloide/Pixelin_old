@@ -28,12 +28,6 @@ Layout* baseLayout;// = new Layout();
 
 bool quit = false;
 
-int amouseX = 0; 
-int amouseY = 0;
-int mouseX = 0;
-int mouseY = 0;
-bool mousePressed = false;
-
 void init()
 {
     SDL_Init(SDL_INIT_VIDEO);
@@ -181,6 +175,7 @@ int main(int argc, char* argv[])
                 {
                     events->mouseButton = e.button.button;
                     events->mousePressed = false;
+                    events->mouseReleased = true;
                 }
                 if(e.type == SDL_MOUSEBUTTONDOWN)
                 {

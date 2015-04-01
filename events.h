@@ -9,7 +9,7 @@ public:
 
 	bool Ctrl, Alt, Shift;
 	int mouseButton, mouseWheel;
-	bool mouseClicked, mousePressed;
+	bool mouseClicked, mousePressed, mouseReleased;
 	int amouseX, amouseY;
 	int mouseX, mouseY;
 protected:

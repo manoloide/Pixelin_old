@@ -161,8 +161,6 @@ void View::update()
 						}
 					}
 
-					printf("%i\n", analyzed.size());
-
 					for(int i = 0; i < replace.size(); i++)
 					{
 						Pixel ap = replace[i];
@@ -189,21 +187,19 @@ void View::update()
 				}
 			}
 		}
-		else if(global->tool == 2)
+	}
+
+	if(global->tool == 2)
+	{
+		if(events->mouseReleased)
 		{
 			for(int j = 0; j < canvas->h; j++){
 				for(int i = 0; i < canvas->w; i++){
 					canvas->setPixel(i, j, lerpColor(color(255, 0, 0), color(0, 0,255), i*1./canvas->w));
 				}
 			}
+
 		}
-		/*
-		if(events->mouseButton == SDL_BUTTON_RIGHT)
-		{
-			canvas->stroke(250);
-			canvas->line(amx/scale, amy/scale, mx/scale, my/scale);
-		}
-		*/
 	}
 
 	if(events->mouseWheel != 0)
