@@ -195,10 +195,12 @@ void View::update()
 
 	if(global->tool == 2)
 	{
-		if(events->mouseReleased)
+		if(events->mouseReleased && events->mouseButton == SDL_BUTTON_LEFT)
 		{
 			Uint32 c1 = global->colorSelect;
 			Uint32 c2 = color(240);
+			bool radius = false;
+			bool linear = true;
 
 			int x1 = cmx/scale;
 			int y1 = cmy/scale;
@@ -206,11 +208,30 @@ void View::update()
 			int y2 = my/scale;
 
 			float dd = dist(x1, y1, x2, y2);
-			for(int j = 0; j < canvas->h; j++){
-				for(int i = 0; i < canvas->w; i++){
-					float vv = dist(i, j, x1, y1)/dd;
-					canvas->setPixel(i, j, lerpColor(c1, c2, vv));
+			if(radius)
+			{
+				for(int j = 0; j < canvas->h; j++){
+					for(int i = 0; i < canvas->w; i++){
+						float vv = (dd > 0)? dist(i, j, x1, y1)/dd : 1;
+						canvas->setPixel(i, j, lerpColor(c1, c2, vv));
+					}
 				}
+
+			}
+			if(linear)
+			{
+				float ang = atan2(y1-y2, x1-x2);
+				float x2 = x1 + cos(ang+M_PI/2)*dd;
+				float y2 = y1 + sin(ang+M_PI/2)*dd;
+				for(int j = 0; j < canvas->h; j++){
+					for(int i = 0; i < canvas->w; i++){
+						//float vv = (dd > 0)? dist(i, j, x1, y1)/dd : 1;
+						float d = ((x2-x1)*(j-y1)-(y2-y1)*(i-x1))/dd;
+						float v = d/dd;
+						canvas->setPixel(i, j, lerpColor(c1, c2, v));
+					}
+				}
+
 			}
 
 		}
