@@ -1,7 +1,8 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
-#include "SDL2/SDL.h"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 #include "utilities.h"
 
@@ -14,6 +15,9 @@ public:
 	//void resize(int _w, int _h);
 
 	SDL_Surface* get();
+
+	void loadImage(char* src);
+	void saveImage(char* src);
 	
 	Uint32 getPixel(int x, int y);
 	void setPixel(int x, int y, Uint32 color);
@@ -37,8 +41,8 @@ public:
 	Uint32 fillColor, strokeColor;
 	
 	int w, h;
-private:
-	SDL_Surface *surface;
+	SDL_Surface* surface;
+protected:
 };
 
 #endif

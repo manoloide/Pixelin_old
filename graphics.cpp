@@ -5,10 +5,12 @@ Graphics::Graphics(int _w, int _h)
 	w = _w;
 	h = _h;
 	surface = SDL_CreateRGBSurface(0, w, h, 32, 0, 0, 0, 0);
+	//loadImage("img.bmp");
 }
 
 Graphics::~Graphics()
 {
+	saveImage("img.bmp");
 	SDL_FreeSurface(surface);
 }
 
@@ -17,10 +19,40 @@ SDL_Surface* Graphics::get()
 	return surface;
 }
 
+void Graphics::loadImage(char* src)
+{
+	/*
+	SDL_Surface* temp = NULL;
+	if((temp = IMG_Load(src)) == NULL) 
+	{
+		printf("no load image");
+	}
+	else
+	{
+		surface = SDL_ConvertSurface(temp, surface->format, NULL);
+	}
+	//SDL_FreeSurface(temp);
+	SDL_FreeSurface(surface);
+	*/
+	SDL_Surface* temp = SDL_LoadBMP(src);
+	if(temp != NULL)
+	{
+		surface = temp;//SDL_ConvertSurface(temp, 32, NULL);
+	}
+
+	w = surface->w;
+	h = surface->h;
+}
+
+void Graphics::saveImage(char* src)
+{
+	SDL_SaveBMP(surface, src);
+}
+
 Uint32 Graphics::getPixel(int x, int y)
 {	
-    Uint32 *pixels = (Uint32 *)surface->pixels;
-    return pixels[ ( y * w ) + x ];
+	Uint32 *pixels = (Uint32 *)surface->pixels;
+	return pixels[ ( y * w ) + x ];
 
 }
 

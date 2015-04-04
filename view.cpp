@@ -18,6 +18,11 @@ View::View(Layout* _parent) : Widget(_parent)
 	posy = 10;//-canvas->h/2;
 }
 
+View::~View()
+{
+	delete canvas;
+}
+
 void View::update()
 {
 	if(events->mousePressed && events->mouseButton == SDL_BUTTON_MIDDLE)

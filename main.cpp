@@ -1,4 +1,5 @@
-#include "SDL2/SDL.h"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include <math.h> 
 
@@ -24,7 +25,9 @@ int screenHeight = 600;
 
 Events* events;
 Global* global;
+
 Layout* baseLayout;// = new Layout();
+View* view;
 
 bool quit = false;
 
@@ -32,13 +35,21 @@ void init()
 {
     SDL_Init(SDL_INIT_VIDEO);
 
+    int flags = IMG_INIT_JPG | IMG_INIT_PNG;
+    IMG_Init(flags);
+
     window = SDL_CreateWindow("Pixelin", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenWidth, screenHeight, SDL_WINDOW_RESIZABLE);
 }
 
 void close()
 {
+    //provicional delete view
+    delete view;
+    //delete all interface
+    //delete baseLayout;
 
     SDL_DestroyWindow(window);
+    IMG_Quit();
     SDL_Quit();
 
 }
@@ -58,19 +69,8 @@ void resize(int w, int h)
 
 void render()
 {
-    //SDL_SetRenderDrawColor(image, 0xff, 0xff, 0xff, 0xff );
-    //SDL_RenderDrawLine(image, amouseY, amouseY, mouseX, mouseY);
-    //SDL_RenderDrawLine(image, amouseX, amouseX, mouseX, mouseY);
-    //setPixel(image, mouseX, mouseY, 255, 0, 0);
-    if(global->allRender)
-    {
-        global->allRender = false;    
-    }
-    
     baseLayout->show();
-    //image(screen, canvas,  screen->w/2, screen->h/2);
     SDL_BlitSurface(baseLayout->getSurface(), NULL, screen, NULL);
-    //SDL_BlitSurface(canvas->get(), NULL, screen, NULL);
 }
 
 int main(int argc, char* argv[]) 
@@ -104,7 +104,7 @@ int main(int argc, char* argv[])
 
         Tools* tools =  new Tools(v3);
         tools->setMaxWidth(80);
-        View* h2 =  new View(v3);
+        view =  new View(v3);
         Layout* h3 =  new Layout(v3);
         h3->setStyle(baseLayout->Vertical); 
         h3->setMaxWidth(280);
@@ -199,11 +199,14 @@ int main(int argc, char* argv[])
 
 
             render();
+            
 
             SDL_UpdateWindowSurface( window );
             SDL_Delay(20);
         }
     }
+
+    //SDL_SaveBMP(view->getCanvas()->get(), "img.bmp");
 
     close();
     return 0;

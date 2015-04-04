@@ -21,6 +21,8 @@ public:
 	void update();
 	void redraw();
 
+	Graphics* getCanvas() const { return canvas;};
+
 private:
 	int scale;
 	int posx, posy;

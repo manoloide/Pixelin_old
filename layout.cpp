@@ -15,6 +15,10 @@ Layout::Layout(Layout* _parent)
 
 Layout::~Layout()
 {
+	for (int i = 0; i < children.size(); i++) {
+		Layout* l = children.at(i);
+		delete l;
+	}
 	SDL_FreeSurface(surface);
 }
 
