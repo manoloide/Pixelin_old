@@ -123,6 +123,67 @@ void Button::setVal(bool v)
 	val = v;
 }
 
+Selector::Selector(Layout* _layout, int _x, int _y, int _w, int _h, int _count, int _val)
+{
+	layout = _layout;
+	x = _x;
+	y = _y;
+	w = _w;
+	h = _h;
+	count = _count;
+	val = _val;
+
+	click = press = false;
+}
+
+void Selector::update(int mx, int my)
+{
+	click = false;
+	if(mx >= x && mx < x+w && my >= y && my < y+h)
+	{
+		on = true;
+	}
+	else
+	{
+		on = false;
+	}
+
+	if(on && events->mouseClicked)
+	{
+		click = true;
+		press = true;
+		int ww = w/count;
+		val = (mx-x)/ww;
+		printf("%i %i %i %i %i\n", val, ww, w, count, mx);
+	}
+	if(events->mouseReleased)
+	{
+		press = false;
+	}
+}
+
+void Selector::draw(int mx, int my)
+{
+	int ww = w/count;
+	for(int i = 0; i < count; i++)
+	{
+		int cc = 100;
+		if(i == val)
+		{
+			cc = 140;
+		}
+		if(on) cc += 10;
+		Uint32 col = color(cc);
+		SDL_Rect background = {x+ww*i, y, ww, h};
+		SDL_FillRect(layout->getSurface(), &background, col);
+
+	}
+}
+
+void Selector::setVal(int v)
+{
+	val = v;
+}
 
 Toggle::Toggle(Layout* _layout, int _x, int _y, int _w, int _h, bool _val)
 {

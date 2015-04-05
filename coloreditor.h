@@ -23,6 +23,7 @@ private:
 	Uint32 colorSelect;
 
 	Button *black;
+	Selector *selector;
 	Slide *sred, *sgreen, *sblue;
 };
 

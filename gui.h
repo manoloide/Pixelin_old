@@ -40,6 +40,19 @@ public:
 	bool val, click, press;
 };
 
+class Selector : public GuiElement{
+public:
+	Selector(Layout* _layout, int _x, int _y, int _w, int _h, int _count, int _val);
+	void update(int mx, int my);
+	void draw(int mx, int my);
+
+	//int getValue() const {return val;};
+	void setVal(int v);
+
+	bool click, press;
+	int count, val;
+};
+
 class Toggle : public GuiElement{
 public:
 	Toggle(Layout* _layout, int _x, int _y, int _w, int _h, bool _val);

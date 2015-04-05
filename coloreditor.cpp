@@ -13,6 +13,7 @@ ColorEditor::ColorEditor(Layout* _parent) : Widget(_parent)
 	sgreen = new Slide(this, 80, 40, getWidth()-180, 10, 0, 255, green(colorSelect));
 	sblue = new Slide(this, 80, 60, getWidth()-180, 10, 0, 255, blue(colorSelect));
 
+	selector = new Selector(this, 220, 20, 50, 10, 5, 0);
 	black = new Button(this, 220, 60, 10, 10, false);
 
 }
@@ -32,6 +33,7 @@ void ColorEditor::update()
 	sgreen->update(mx, my);
 	sblue->update(mx, my);	
 
+	selector->update(mx, my);
 	black->update(mx, my);
 	if(black->click)
 	{
@@ -56,5 +58,6 @@ void ColorEditor::redraw()
 	sgreen->draw(0, 0);
 	sblue->draw(0, 0);
 
+	selector->draw(0, 0);
 	black->draw(0, 0);
 }
