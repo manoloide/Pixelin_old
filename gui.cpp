@@ -70,3 +70,59 @@ void Slide::setVal(int v)
 	val = constrain(v, min, max);
 	pos = map(val, min, max, 0, w-h);
 }
+
+
+Toggle::Toggle(Layout* _layout, int _x, int _y, int _w, int _h, bool _val)
+{
+	layout = _layout;
+	x = _x;
+	y = _y;
+	w = _w;
+	h = _h;
+	val = _val;
+
+	click = press = false;
+}
+
+
+void Toggle::update(int mx, int my)
+{
+	click = false;
+	if(mx >= x && mx < x+w && my >= y && my < y+h)
+	{
+		on = true;
+	}
+	else
+	{
+		on = false;
+	}
+
+	if(on && events->mouseClicked)
+	{
+		click = true;
+		press = true;
+		val = !val;
+	}
+	if(events->mouseReleased)
+	{
+		press = false;
+	}
+}
+
+void Toggle::draw(int mx, int my)
+{
+	int cc = 100;
+	if(val)
+	{
+		cc = 140;
+	}
+	if(on) cc += 10;
+	Uint32 col = color(cc);
+	SDL_Rect background = {x, y, w, h};
+	SDL_FillRect(layout->getSurface(), &background, col);
+}
+
+void Toggle::setVal(bool v)
+{
+	val = v;
+}

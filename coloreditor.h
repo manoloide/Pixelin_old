@@ -21,6 +21,8 @@ public:
 private:
 
 	Uint32 colorSelect;
+
+	Toggle *black;
 	Slide *sred, *sgreen, *sblue;
 };
 
