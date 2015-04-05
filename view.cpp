@@ -247,12 +247,20 @@ void View::update()
 		int ascale = scale;
 		scale += events->mouseWheel;
 		if(scale < 1) scale = 1;
+
+
+		int mx = events->mouseX-realLeft;
+		int my = events->mouseY-realTop;
+		int ww = canvas->w;
+		int hh = canvas->h;
+		posx -= (((mx-posx)*1./(ww*ascale))*(ww*scale - ww*ascale));
+		posy -= (((my-posy)*1./(hh*ascale))*(hh*scale - hh*ascale));
 	}
 }
 
 void View::redraw()
 {
-	
+
 	Uint32 col = getBackgroundColor();
 	SDL_FillRect(getSurface(), NULL, col);
 

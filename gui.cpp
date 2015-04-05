@@ -154,7 +154,6 @@ void Selector::update(int mx, int my)
 		press = true;
 		int ww = w/count;
 		val = (mx-x)/ww;
-		printf("%i %i %i %i %i\n", val, ww, w, count, mx);
 	}
 	if(events->mouseReleased)
 	{
