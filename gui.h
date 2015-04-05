@@ -28,6 +28,18 @@ public:
 	int min, max, val, pos;
 };
 
+class Button : public GuiElement{
+public:
+	Button(Layout* _layout, int _x, int _y, int _w, int _h, bool _val);
+	void update(int mx, int my);
+	void draw(int mx, int my);
+
+	//int getValue() const {return val;};
+	void setVal(bool v);
+
+	bool val, click, press;
+};
+
 class Toggle : public GuiElement{
 public:
 	Toggle(Layout* _layout, int _x, int _y, int _w, int _h, bool _val);

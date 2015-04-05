@@ -13,7 +13,7 @@ ColorEditor::ColorEditor(Layout* _parent) : Widget(_parent)
 	sgreen = new Slide(this, 80, 40, getWidth()-180, 10, 0, 255, green(colorSelect));
 	sblue = new Slide(this, 80, 60, getWidth()-180, 10, 0, 255, blue(colorSelect));
 
-	black = new Toggle(this, 220, 60, 10, 10, false);
+	black = new Button(this, 220, 60, 10, 10, false);
 
 }
 

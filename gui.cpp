@@ -71,6 +71,58 @@ void Slide::setVal(int v)
 	pos = map(val, min, max, 0, w-h);
 }
 
+Button::Button(Layout* _layout, int _x, int _y, int _w, int _h, bool _val)
+{
+	layout = _layout;
+	x = _x;
+	y = _y;
+	w = _w;
+	h = _h;
+	val = _val;
+
+	click = press = false;
+}
+
+void Button::update(int mx, int my)
+{
+	click = false;
+	press = false;
+	val = false;
+	if(mx >= x && mx < x+w && my >= y && my < y+h)
+	{
+		on = true;
+	}
+	else
+	{
+		on = false;
+	}
+
+	if(on && events->mouseClicked)
+	{
+		click = true;
+		press = true;
+		val = !val;
+	}
+}
+
+void Button::draw(int mx, int my)
+{
+	int cc = 100;
+	if(val)
+	{
+		cc = 140;
+	}
+	if(on) cc += 10;
+	Uint32 col = color(cc);
+	SDL_Rect background = {x, y, w, h};
+	SDL_FillRect(layout->getSurface(), &background, col);
+}
+
+void Button::setVal(bool v)
+{
+	val = v;
+}
+
 
 Toggle::Toggle(Layout* _layout, int _x, int _y, int _w, int _h, bool _val)
 {
@@ -83,7 +135,6 @@ Toggle::Toggle(Layout* _layout, int _x, int _y, int _w, int _h, bool _val)
 
 	click = press = false;
 }
-
 
 void Toggle::update(int mx, int my)
 {
