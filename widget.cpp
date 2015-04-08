@@ -20,3 +20,8 @@ void Widget::update()
 void Widget::redraw()
 {
 }
+
+void Widget::addElement(GuiElement* ng)
+{
+	elements.push_back(ng);
+}

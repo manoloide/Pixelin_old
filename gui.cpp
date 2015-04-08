@@ -6,9 +6,17 @@ GuiElement::GuiElement()
 	on = press = moved = false;
 }
 
+void GuiElement::update(int mx, int my)
+{
+
+}
+void GuiElement::draw(int mx, int my)
+{
+
+}
+
 Slide::Slide(Layout* _layout, int _x, int _y, int _w, int _h, int _min, int _max, int _val)
 {
-	
 	layout = _layout;
 	x = _x;
 	y = _y;

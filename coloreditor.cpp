@@ -9,12 +9,12 @@ ColorEditor::ColorEditor(Layout* _parent) : Widget(_parent)
 	//printf("%i %i %i %i\n", red(colorSelect), getParent()->getWidth(), getMinWidth(), getMaxWidth());
 	colorSelect = global->colorSelect;
 
-	sred = new Slide(this, 80, 20, getWidth()-180, 10, 0, 255, red(colorSelect));
-	sgreen = new Slide(this, 80, 40, getWidth()-180, 10, 0, 255, green(colorSelect));
-	sblue = new Slide(this, 80, 60, getWidth()-180, 10, 0, 255, blue(colorSelect));
+	addElement(sred = new Slide(this, 80, 20, getWidth()-180, 10, 0, 255, red(colorSelect)));
+	addElement(sgreen = new Slide(this, 80, 40, getWidth()-180, 10, 0, 255, green(colorSelect)));
+	addElement(sblue = new Slide(this, 80, 60, getWidth()-180, 10, 0, 255, blue(colorSelect)));
 
-	selector = new Selector(this, 220, 20, 50, 10, 5, 0);
-	black = new Button(this, 220, 60, 10, 10, false);
+	addElement(selector = new Selector(this, 220, 20, 50, 10, 5, 0));
+	addElement(black = new Button(this, 220, 60, 10, 10, false));
 
 }
 
@@ -29,12 +29,12 @@ void ColorEditor::update()
 	int mx = events->mouseX-realLeft;
 	int my = events->mouseY-realTop;
 
-	sred->update(mx, my);
-	sgreen->update(mx, my);
-	sblue->update(mx, my);	
+	for(int i = 0; i < elements.size(); i++)
+	{
+		GuiElement* element = elements[i];
+		element->update(mx, my);	
+	}
 
-	selector->update(mx, my);
-	black->update(mx, my);
 	if(black->click)
 	{
 		sred->setVal(0);
@@ -54,10 +54,9 @@ void ColorEditor::redraw()
 	SDL_Rect viewColor = {20, 20, 50, 50};
 	SDL_FillRect(getSurface(), &viewColor, colorSelect);
 
-	sred->draw(0, 0);
-	sgreen->draw(0, 0);
-	sblue->draw(0, 0);
-
-	selector->draw(0, 0);
-	black->draw(0, 0);
+	for(int i = 0; i < elements.size(); i++)
+	{
+		GuiElement* element = elements[i];
+		element->draw(0, 0);	
+	}
 }

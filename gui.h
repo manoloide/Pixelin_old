@@ -10,6 +10,9 @@ class GuiElement{
 public:
 	GuiElement();
 
+	virtual void update(int mx, int my);
+	virtual void draw(int mx, int my);
+
 	bool on, press, moved;
 	Events* events;
 	int x, y, w, h;	

@@ -43,7 +43,7 @@ void View::update()
 
 		if(global->tool == 0)
 		{
-			if(events->mouseButton == SDL_BUTTON_LEFT)
+			if((events->mouseClicked || events->mouseDragged) && events->mouseButton == SDL_BUTTON_LEFT)
 			{
 				if(events->Ctrl && mx >= 0 && mx/scale < canvas->w && my >= 0 && my/scale < canvas->h)
 				{
@@ -242,6 +242,13 @@ void View::update()
 		}
 	}
 
+	if(global->tool == 3)
+	{
+		canvas->strokeColor = global->colorSelect;
+		Uint32 c = color(255, 0, 0, 20);
+		canvas->setPixel(amx/scale, my/scale, c);
+	}
+
 	if(events->mouseWheel != 0)
 	{	
 		int ascale = scale;
@@ -264,11 +271,13 @@ void View::redraw()
 	Uint32 col = getBackgroundColor();
 	SDL_FillRect(getSurface(), NULL, col);
 
-	SDL_Surface* aux = SDL_CreateRGBSurface(0, canvas->w*scale, canvas->h*scale, 32, 0, 0, 0, 0);
 
+	SDL_Surface* aux = SDL_CreateRGBSurface(0, canvas->w*scale, canvas->h*scale, 32, 0, 0, 0, 0);
 	SDL_Rect location = {0, 0, canvas->w*scale, canvas->h*scale}; 
 	SDL_BlitScaled(canvas->get(), NULL, aux, &location); 
+	//SDL_SetAlpha(aux,SDL_SRCALPHA,255);
 	location = {posx, posy, canvas->w*scale, canvas->h*scale}; 
+	SDL_FillRect(getSurface(), &location, 0xFFFFAA00);
 	SDL_BlitSurface(aux, NULL, getSurface(), &location);
 
 	SDL_FreeSurface(aux);

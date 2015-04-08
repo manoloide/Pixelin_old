@@ -23,6 +23,9 @@ Events::Events()
 void Events::update()
 {
 	mouseClicked = false;
+	mouseDragged = false;
 	mouseReleased = false;
 	mouseWheel = 0;
+
+	
 }

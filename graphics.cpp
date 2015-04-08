@@ -4,7 +4,7 @@ Graphics::Graphics(int _w, int _h)
 {
 	w = _w;
 	h = _h;
-	surface = SDL_CreateRGBSurface(0, w, h, 32, 0, 0, 0, 0);
+	surface = SDL_CreateRGBSurface(0, w, h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 	//loadImage("img.bmp");
 }
 
@@ -63,9 +63,15 @@ void Graphics::setPixel(int x, int y, Uint32 color)
 	{
 		return;
 	}
-
-	Uint8 *  bufp= (Uint8 *)surface->pixels + y*surface->pitch + x*surface->format->BytesPerPixel;
-	switch (surface->format->BytesPerPixel) {
+/*
+	if(alpha(color) < 255)
+	{
+		color = lerpColor(getPixel(x, y), color, alpha(color)/256.);
+	}
+*/
+	Uint8 *bufp = (Uint8 *)surface->pixels + y*surface->pitch + x*surface->format->BytesPerPixel;
+	switch (surface->format->BytesPerPixel) 
+	{
 		case 4:
 		bufp[3] = color >> 24;
 		case 3:
@@ -83,9 +89,11 @@ void Graphics::line(int x0, int y0, int x1, int y1)
 	float ww = x1-x0;
 	float hh = y1-y0;
 	float len = sqrt((w*w)+(h*h));
+	//strokeColor = 0x66FF0000;
+	Uint32 sc = strokeColor;//color(red(strokeColor), green(strokeColor), blue(strokeColor), 20);
 	if(len < 1)
 	{
-		setPixel(x0, y0, strokeColor);
+		setPixel(x0, y0, sc);
 	}
 	else
 	{
@@ -95,7 +103,7 @@ void Graphics::line(int x0, int y0, int x1, int y1)
 		{
 			int xx = floor(x0+dx*i); 
 			int yy = floor(y0+dy*i);
-			setPixel(xx, yy, strokeColor);
+			setPixel(xx, yy, sc);
 		}
 	}
 }

@@ -128,7 +128,11 @@ int main(int argc, char* argv[])
             SDL_PumpEvents();
             events->amouseX = events->mouseX; 
             events->amouseY = events->mouseY;
-            SDL_GetMouseState( &events->mouseX, & events->mouseY);
+            SDL_GetMouseState( &events->mouseX, &events->mouseY);
+            if(events->amouseX != events->mouseX || events->amouseY != events->mouseY)
+            {
+                events->mouseDragged = true;
+            }
 
             while( SDL_PollEvent( &e ) != 0 )
             {

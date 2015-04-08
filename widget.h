@@ -6,6 +6,7 @@
 #include "layout.h"
 #include "events.h"
 #include "global.h"
+#include "gui.h"
 
 class Widget : public Layout
 {
@@ -16,10 +17,13 @@ public:
 	virtual void update();
 	virtual void redraw();
 
+	void addElement(GuiElement* ng);
+
 protected:
 	Events* events;
 	Global* global;
 
+	std::vector<GuiElement*> elements;
 };
 
 #endif
