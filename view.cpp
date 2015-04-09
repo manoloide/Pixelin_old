@@ -261,8 +261,9 @@ void View::update()
 	else if(global->tool == ERASER)
 	{
 		canvas->strokeColor = global->colorSelect;
-		Uint32 c = color(0, 0, 0, 20);
-		canvas->setPixel(amx/scale, my/scale, c);
+		Uint32 c = canvas->getPixel(amx/scale, my/scale);
+		c = color(red(c), green(c), blue(c), alpha(c)-10);
+		canvas->setPixel(amx/scale, my/scale, c, false);
 	}
 
 	if(events->mouseWheel != 0)
@@ -287,17 +288,29 @@ void View::redraw()
 	Uint32 col = getBackgroundColor();
 	SDL_FillRect(getSurface(), NULL, col);
 
-	SDL_Surface* aux = SDL_CreateRGBSurface(0, canvas->w*scale, canvas->h*scale, 32, 0, 0, 0, 0);
-	//SDL_Surface* a2 = SDL_CreateRGBSurface(0, canvas->w*scale, canvas->h*scale, 32, 0, 0, 0, 0);
-	//SDL_FillRect(a2, NULL, 0xFFFFAA00);
+	SDL_Surface* aux = SDL_CreateRGBSurface(0, canvas->w*scale, canvas->h*scale, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+	SDL_Surface* a2 = SDL_CreateRGBSurface(0, canvas->w*scale, canvas->h*scale, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+	SDL_FillRect(a2, NULL, 0xFFFFAA00);
 	
 	SDL_Rect location = {0, 0, canvas->w*scale, canvas->h*scale}; 
 	SDL_BlitScaled(canvas->get(), NULL, aux, &location); 
+	location = {posx, posy, canvas->w*scale, canvas->h*scale};
+	SDL_BlitSurface(aux, NULL, a2, NULL);
+	SDL_BlitSurface(a2, NULL, getSurface(), &location);
+
+	SDL_FreeSurface(aux);
+	SDL_FreeSurface(a2);
+	/*
+	//aux = SDL_ConvertSurfaceFormat(aux, SDL_PIXELFORMAT_ARGB8888, 0);
 
 	location = {posx, posy, canvas->w*scale, canvas->h*scale}; 
 	SDL_FillRect(getSurface(), &location, 0xFFFFAA00);
 	//SDL_SetSurfaceBlendMode(aux, SDL_BLENDMODE_BLEND);
-	//aux = mixerSurface(a2, aux);
-	SDL_BlitSurface(aux, NULL, getSurface(), &location);
+	SDL_FillRect(a2, NULL, 0xFFFFAA00);
+	//SDL_Surface* mixer = mixerSurface(a2, aux);
+	SDL_BlitSurface(mixer, NULL, getSurface(), &location);
 	SDL_FreeSurface(aux);
+	SDL_FreeSurface(a2);
+	SDL_FreeSurface(mixer);
+	*/
 }

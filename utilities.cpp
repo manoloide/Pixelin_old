@@ -89,6 +89,23 @@ Uint8 alpha(Uint32 col){
 	return (Uint8) temp;
 }
 
+Uint32 setRed(Uint32 col, Uint8 v)
+{
+	return color(v, green(col), blue(col), alpha(col));	
+}
+Uint32 setGreen(Uint32 col, Uint8 v)
+{
+	return color(red(col), v, blue(col), alpha(col));
+}
+Uint32 setBlue(Uint32 col, Uint8 v)
+{
+	return color(red(col), green(col), v, alpha(col));
+}
+Uint32 setAlpha(Uint32 col, Uint8 v)
+{
+	return color(red(col), green(col), blue(col), v);
+}
+
 Uint32 lerpColor(Uint32 c1, Uint32 c2, float v){
 	if(v <= 0) return c1;
 	if(v >= 1) return c2;
@@ -152,23 +169,27 @@ SDL_Surface* mixerSurface(SDL_Surface* s1, SDL_Surface* s2)
 		{
 			Uint32 c1 = getPixel(s1, i, j);
 			Uint32 c2 = getPixel(s2, i, j);
-			if(c2 == NULL){
-				setPixel(aux, i, j, c1);
-			}else{
-				setPixel(aux, i, j, c2);
-			}
-			/*
-			if(alpha(c2) == 255)
+			if(c2 == NULL)
 			{
-				setPixel(aux, i, j, c2);
-			}else if(alpha(c2) == 0){
 				setPixel(aux, i, j, c1);
-			}else{
-				setPixel(aux, i, j, lerpColor(c1, c2, alpha(c2)/256.));
-			}*/
+			}else
+			{
+				if(alpha(c2) == 255)
+				{
+					setPixel(aux, i, j, c2);
+				}
+				else if(alpha(c2) == 0)
+				{
+					setPixel(aux, i, j, c1);
+				}
+				else
+				{
+					setPixel(aux, i, j, lerpColor(c1, c2, alpha(c2)/256.));
+				}
 			}
 		}
-
-		return aux;
-
 	}
+
+	return aux;
+
+}

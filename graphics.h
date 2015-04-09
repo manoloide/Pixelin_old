@@ -22,6 +22,7 @@ public:
 	void saveImage(char* src);
 	
 	Uint32 getPixel(int x, int y);
+	void setPixel(int x, int y, Uint32 color, bool replace);
 	void setPixel(int x, int y, Uint32 color);
 	
 	void line(int x0, int y0, int x1, int y1);

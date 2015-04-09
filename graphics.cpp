@@ -23,7 +23,7 @@ void Graphics::resize(int _w, int _h)
 {
 	w = _w; 
 	h = _h;
- 
+
 	SDL_Surface* aux = SDL_CreateRGBSurface(0, w, h, 32, 0, 0, 0, 0);
 	SDL_BlitSurface(aux, NULL, surface, NULL);
 
@@ -68,7 +68,7 @@ Uint32 Graphics::getPixel(int x, int y)
 
 }
 
-void Graphics::setPixel(int x, int y, Uint32 col)
+void Graphics::setPixel(int x, int y, Uint32 col, bool replace)
 {
 
 	if( x < 0 || x >= w || y < 0 || y >= h)
@@ -76,7 +76,7 @@ void Graphics::setPixel(int x, int y, Uint32 col)
 		return;
 	}
 
-	if(alpha(col) < 255)
+	if(replace && alpha(col) < 255)
 	{
 		col = lerpColor(getPixel(x, y), color(red(col), green(col), blue(col)), alpha(col)/256.);
 	}
@@ -94,6 +94,11 @@ void Graphics::setPixel(int x, int y, Uint32 col)
 		bufp[0] = col;
 	}
 	return;
+}
+
+void Graphics::setPixel(int x, int y, Uint32 col)
+{
+	setPixel(x, y, col, true);
 }
 
 void Graphics::line(int x0, int y0, int x1, int y1)
