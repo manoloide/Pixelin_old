@@ -16,6 +16,8 @@ public:
 
 	SDL_Surface* get();
 
+	void resize(int _w, int _h);
+
 	void loadImage(char* src);
 	void saveImage(char* src);
 	

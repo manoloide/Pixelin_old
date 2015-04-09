@@ -19,6 +19,18 @@ SDL_Surface* Graphics::get()
 	return surface;
 }
 
+void Graphics::resize(int _w, int _h)
+{
+	w = _w; 
+	h = _h;
+ 
+	SDL_Surface* aux = SDL_CreateRGBSurface(0, w, h, 32, 0, 0, 0, 0);
+	SDL_BlitSurface(aux, NULL, surface, NULL);
+
+	SDL_FreeSurface(surface);
+	surface = aux;
+}
+
 void Graphics::loadImage(char* src)
 {
 	/*
