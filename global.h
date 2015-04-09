@@ -13,6 +13,9 @@ public:
 	int tool;
 	Uint32 colorSelect;
 
+	int gradientType;
+	int gradientAlpha;
+
 protected:
 	Global();
 	Global(const Global & ) ;

@@ -19,7 +19,6 @@ public:
 	void redraw();
 
 private:
-
 	Uint32 colorSelect;
 
 	Button *black;

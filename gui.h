@@ -6,6 +6,12 @@
 #include "layout.h"
 #include "utilities.h"
 
+#define PENCIL 0
+#define BUCKET 1
+#define GRADIENT 2
+#define ERASER 3
+
+
 class GuiElement{
 public:
 	GuiElement();

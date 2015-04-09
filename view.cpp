@@ -41,7 +41,7 @@ void View::update()
 	if(events->mousePressed)
 	{
 
-		if(global->tool == 0)
+		if(global->tool == PENCIL)
 		{
 			if((events->mouseClicked || events->mouseDragged) && events->mouseButton == SDL_BUTTON_LEFT)
 			{
@@ -57,7 +57,7 @@ void View::update()
 
 			}
 		}
-		else if(global->tool == 1)
+		else if(global->tool == BUCKET)
 		{
 			if(events->mouseButton == SDL_BUTTON_LEFT && events->mouseClicked)
 			{
@@ -198,14 +198,20 @@ void View::update()
 		}
 	}
 
-	if(global->tool == 2)
+	if(global->tool == GRADIENT)
 	{
 		if(events->mouseReleased && events->mouseButton == SDL_BUTTON_LEFT)
 		{
 			Uint32 c1 = global->colorSelect;
 			Uint32 c2 = color(240);
 			bool radius = false;
-			bool linear = true;
+			bool linear = false;
+			bool angle = false;
+
+			if(global->gradientType == 0) radius = true;
+			if(global->gradientType == 1) linear = true;
+			if(global->gradientType == 2) angle = true;
+
 
 			int x1 = cmx/scale;
 			int y1 = cmy/scale;
@@ -238,11 +244,24 @@ void View::update()
 						}
 					}
 				}
+				if(angle)
+				{
+					float ang = atan2(y1-y2, x1-x2)-M_PI;
+					float TWO_PI = M_PI*2;
+					for(int j = 0; j < canvas->h; j++){
+						for(int i = 0; i < canvas->w; i++){
+							float v = map(atan2(y1-j, x1-i)-ang, -M_PI, M_PI, 0, 1);
+							if(v > 1) v-=1;
+							if(v < 0) v+=1;
+							canvas->setPixel(i, j, lerpColor(c1, c2, v));
+						}
+					}
+				}
 			}
 		}
 	}
 
-	if(global->tool == 3)
+	if(global->tool == ERASER)
 	{
 		canvas->strokeColor = global->colorSelect;
 		Uint32 c = color(255, 0, 0, 20);
