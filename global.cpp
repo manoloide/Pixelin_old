@@ -14,4 +14,10 @@ Global::Global()
 	allRender = false;
 	tool = 0;
 	Uint32 colorSelect = color(0);
+
+	bucketContinguous = true;
+	bucketTolerance = 0;
+
+	gradientType = 0;
+	gradientAlpha = 255;
 }

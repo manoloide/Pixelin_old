@@ -20,7 +20,7 @@ public:
 
 private:
 	int sizeBox, borderBox, limitBorder;
-	int tool;
+	int tool, toolsCount;
 };
 
 #endif

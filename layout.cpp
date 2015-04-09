@@ -48,7 +48,7 @@ void Layout::init()
 
 void Layout::resize()
 {
-	
+	SDL_FreeSurface(surface);
 	surface = SDL_CreateRGBSurface(0, w, h, 32, 0, 0, 0, 0);
 	redraw();
 	int c = children.size();

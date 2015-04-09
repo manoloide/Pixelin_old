@@ -8,6 +8,7 @@ Tools::Tools(Layout* _parent) : Widget(_parent)
 	borderBox = 5;
 	limitBorder = 5;
 	tool = 1;
+	toolsCount = 4;
 }
 
 void Tools::update()
@@ -21,7 +22,7 @@ void Tools::update()
 		int my = events->mouseY-limitBorder-realTop;
 
 		int v = (mx/tt)+(my/tt)*(cc);
-		if(v >= 0 && v < 7 && (mx/tt) < cc){
+		if(v >= 0 && v < toolsCount && (mx/tt) < cc){
 			tool = v;
 		}
 		global->tool = tool;
@@ -35,7 +36,7 @@ void Tools::redraw()
 	SDL_FillRect(getSurface(), NULL, col);
 
 	int cc = (getWidth()-limitBorder)/(sizeBox+borderBox);
-	for(int i = 0; i < 7; i++)
+	for(int i = 0; i < toolsCount; i++)
 	{
 		int xx = limitBorder+(sizeBox+borderBox)*(i%cc);
 		int yy = limitBorder+(sizeBox+borderBox)*(i/cc);
