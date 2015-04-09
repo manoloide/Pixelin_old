@@ -261,7 +261,7 @@ void View::update()
 	else if(global->tool == ERASER)
 	{
 		canvas->strokeColor = global->colorSelect;
-		Uint32 c = color(255, 0, 0, 20);
+		Uint32 c = color(0, 0, 0, 20);
 		canvas->setPixel(amx/scale, my/scale, c);
 	}
 
@@ -287,14 +287,17 @@ void View::redraw()
 	Uint32 col = getBackgroundColor();
 	SDL_FillRect(getSurface(), NULL, col);
 
-
 	SDL_Surface* aux = SDL_CreateRGBSurface(0, canvas->w*scale, canvas->h*scale, 32, 0, 0, 0, 0);
+	//SDL_Surface* a2 = SDL_CreateRGBSurface(0, canvas->w*scale, canvas->h*scale, 32, 0, 0, 0, 0);
+	//SDL_FillRect(a2, NULL, 0xFFFFAA00);
+	
 	SDL_Rect location = {0, 0, canvas->w*scale, canvas->h*scale}; 
 	SDL_BlitScaled(canvas->get(), NULL, aux, &location); 
-	//SDL_SetAlpha(aux,SDL_SRCALPHA,255);
+
 	location = {posx, posy, canvas->w*scale, canvas->h*scale}; 
 	SDL_FillRect(getSurface(), &location, 0xFFFFAA00);
+	//SDL_SetSurfaceBlendMode(aux, SDL_BLENDMODE_BLEND);
+	//aux = mixerSurface(a2, aux);
 	SDL_BlitSurface(aux, NULL, getSurface(), &location);
-
 	SDL_FreeSurface(aux);
 }

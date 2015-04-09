@@ -98,3 +98,77 @@ Uint32 lerpColor(Uint32 c1, Uint32 c2, float v){
 	int a = map(v, 0, 1, alpha(c1), alpha(c2));
 	return color(r, g, b, a);
 }
+
+Uint32 getPixel(SDL_Surface* surface, int x, int y)
+{	
+	int w = surface->w;
+	int h = surface->h;
+	if( x < 0 || x >= w || y < 0 || y >= h)
+	{
+		return NULL;
+	}
+	Uint32 *pixels = (Uint32 *)surface->pixels;
+	return pixels[ ( y * w ) + x ];
+
+}
+
+void setPixel(SDL_Surface* surface, int x, int y, Uint32 col)
+{
+	int w = surface->w;
+	int h = surface->h;
+	if( x < 0 || x >= w || y < 0 || y >= h)
+	{
+		return;
+	}
+
+	if(alpha(col) < 255)
+	{
+		col = lerpColor(getPixel(surface, x, y), color(red(col), green(col), blue(col)), alpha(col)/256.);
+	}
+
+	Uint8 *bufp = (Uint8 *)surface->pixels + y*surface->pitch + x*surface->format->BytesPerPixel;
+	switch (surface->format->BytesPerPixel) 
+	{
+		case 4:
+		bufp[3] = col >> 24;
+		case 3:
+		bufp[2] = col >> 16;
+		case 2:
+		bufp[1] = col >> 8;
+		case 1:
+		bufp[0] = col;
+	}
+	return;
+}
+
+
+SDL_Surface* mixerSurface(SDL_Surface* s1, SDL_Surface* s2)
+{
+	SDL_Surface* aux = SDL_CreateRGBSurface(0, s1->w, s1->h, 32, 0, 0, 0, 0);
+
+	for(int j = 0; j < aux->h; j++)
+	{
+		for(int i = 0; i < aux->w; i++)
+		{
+			Uint32 c1 = getPixel(s1, i, j);
+			Uint32 c2 = getPixel(s2, i, j);
+			if(c2 == NULL){
+				setPixel(aux, i, j, c1);
+			}else{
+				setPixel(aux, i, j, c2);
+			}
+			/*
+			if(alpha(c2) == 255)
+			{
+				setPixel(aux, i, j, c2);
+			}else if(alpha(c2) == 0){
+				setPixel(aux, i, j, c1);
+			}else{
+				setPixel(aux, i, j, lerpColor(c1, c2, alpha(c2)/256.));
+			}*/
+			}
+		}
+
+		return aux;
+
+	}

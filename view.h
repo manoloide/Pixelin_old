@@ -7,6 +7,7 @@
 #include "global.h"
 #include "graphics.h"
 #include "layout.h"
+#include "utilities.h"
 #include "widget.h"
 
 #include <vector>

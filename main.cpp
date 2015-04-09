@@ -70,6 +70,7 @@ void resize(int w, int h)
 
 void render()
 {
+    //resize(screenWidth, screenHeight);
     baseLayout->show();
     SDL_BlitSurface(baseLayout->getSurface(), NULL, screen, NULL);
 }

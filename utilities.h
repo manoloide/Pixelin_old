@@ -29,4 +29,6 @@ Uint8 alpha(Uint32);
 
 Uint32 lerpColor(Uint32, Uint32, float);
 
+SDL_Surface* mixerSurface(SDL_Surface* s1, SDL_Surface* s2);
+
  #endif
