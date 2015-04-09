@@ -13,6 +13,9 @@ public:
 	int tool;
 	Uint32 colorSelect;
 
+	int bucketContinguous;
+	int bucketTolerance;
+
 	int gradientType;
 	int gradientAlpha;
 

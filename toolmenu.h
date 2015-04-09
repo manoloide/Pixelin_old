@@ -18,6 +18,9 @@ public:
 	void redraw();
 
 protected:
+	Toggle* bucketContinguous;
+	Slide* bucketTolerance;
+
 	Selector* gradientType;
 	Slide* gradientAlpha;
 };

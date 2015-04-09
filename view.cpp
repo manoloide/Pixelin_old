@@ -63,8 +63,10 @@ void View::update()
 			{
 				int x = mx/scale;
 				int y = my/scale;
-				bool continguous = true;
-				int tolerance = 0; //0-255 
+
+				bool continguous = global->bucketContinguous;
+				int tolerance = global->bucketTolerance; //0-255 
+
 				Uint32 colNew = global->colorSelect;
 				Uint32 colSus = canvas->getPixel(x, y);
 
@@ -225,7 +227,7 @@ void View::update()
 				{
 					for(int j = 0; j < canvas->h; j++){
 						for(int i = 0; i < canvas->w; i++){
-							float vv = (dd > 0)? dist(i, j, x1, y1)/dd : 1;
+							float vv = (dd > 0)? (pow(x1-i,2)+pow(y1-j,2))/(dd*dd) : 1;
 							canvas->setPixel(i, j, lerpColor(c1, c2, vv));
 						}
 					}
