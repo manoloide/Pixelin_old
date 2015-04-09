@@ -10,7 +10,7 @@ Graphics::Graphics(int _w, int _h)
 
 Graphics::~Graphics()
 {
-	saveImage("img.bmp");
+	//saveImage("img.bmp");
 	SDL_FreeSurface(surface);
 }
 
@@ -56,30 +56,30 @@ Uint32 Graphics::getPixel(int x, int y)
 
 }
 
-void Graphics::setPixel(int x, int y, Uint32 color)
+void Graphics::setPixel(int x, int y, Uint32 col)
 {
 
 	if( x < 0 || x >= w || y < 0 || y >= h)
 	{
 		return;
 	}
-/*
-	if(alpha(color) < 255)
+
+	if(alpha(col) < 255)
 	{
-		color = lerpColor(getPixel(x, y), color, alpha(color)/256.);
+		col = lerpColor(getPixel(x, y), color(red(col), green(col), blue(col)), alpha(col)/256.);
 	}
-*/
+
 	Uint8 *bufp = (Uint8 *)surface->pixels + y*surface->pitch + x*surface->format->BytesPerPixel;
 	switch (surface->format->BytesPerPixel) 
 	{
 		case 4:
-		bufp[3] = color >> 24;
+		bufp[3] = col >> 24;
 		case 3:
-		bufp[2] = color >> 16;
+		bufp[2] = col >> 16;
 		case 2:
-		bufp[1] = color >> 8;
+		bufp[1] = col >> 8;
 		case 1:
-		bufp[0] = color;
+		bufp[0] = col;
 	}
 	return;
 }

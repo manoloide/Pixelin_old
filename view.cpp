@@ -38,174 +38,169 @@ void View::update()
 	int cmx = events->cmouseX-posx-realLeft;
 	int cmy = events->cmouseY-posy-realTop;
 
-	if(events->mousePressed)
+	if(global->tool == PENCIL)
 	{
-
-		if(global->tool == PENCIL)
+		if(events->mousePressed && (events->mouseClicked || events->mouseDragged) && events->mouseButton == SDL_BUTTON_LEFT)
 		{
-			if((events->mouseClicked || events->mouseDragged) && events->mouseButton == SDL_BUTTON_LEFT)
+			if(events->Ctrl && mx >= 0 && mx/scale < canvas->w && my >= 0 && my/scale < canvas->h)
 			{
-				if(events->Ctrl && mx >= 0 && mx/scale < canvas->w && my >= 0 && my/scale < canvas->h)
-				{
-					global->colorSelect = canvas->getPixel(mx/scale, my/scale);
-				}
-				else
-				{
-					canvas->strokeColor = global->colorSelect;
-					canvas->line(amx/scale, amy/scale, mx/scale, my/scale);
-				}
-
+				global->colorSelect = canvas->getPixel(mx/scale, my/scale);
 			}
-		}
-		else if(global->tool == BUCKET)
-		{
-			if(events->mouseButton == SDL_BUTTON_LEFT && events->mouseClicked)
+			else
 			{
-				int x = mx/scale;
-				int y = my/scale;
+				canvas->strokeColor = global->colorSelect;
+				canvas->line(amx/scale, amy/scale, mx/scale, my/scale);
+			}
 
-				bool continguous = global->bucketContinguous;
-				int tolerance = global->bucketTolerance; //0-255 
+		}
+	}
+	else if(global->tool == BUCKET)
+	{
+		if(events->mouseButton == SDL_BUTTON_LEFT && events->mouseClicked)
+		{
+			int x = mx/scale;
+			int y = my/scale;
 
-				Uint32 colNew = global->colorSelect;
-				Uint32 colSus = canvas->getPixel(x, y);
+			bool continguous = global->bucketContinguous;
+			int tolerance = global->bucketTolerance; //0-255 
 
-				if(continguous)
+			Uint32 colNew = global->colorSelect;
+			Uint32 colSus = canvas->getPixel(x, y);
+
+			if(continguous)
+			{
+				std::vector<Pixel> pixels, analyzed, replace;
+				pixels.push_back({x, y});
+
+				bool finish = false;
+
+				while(!finish)
 				{
-					std::vector<Pixel> pixels, analyzed, replace;
-					pixels.push_back({x, y});
-
-					bool finish = false;
-
-					while(!finish)
+					for(int i = 0; i < pixels.size(); i++)
 					{
-						for(int i = 0; i < pixels.size(); i++)
+						Pixel ap = pixels[i];
+						Uint32 pix = canvas->getPixel(ap.x, ap.y);
+						int dr = abs(red(pix)-red(colSus));
+						int dg = abs(green(pix)-green(colSus));
+						int db = abs(blue(pix)-blue(colSus));
+						int dif = (dr+dg+db)/3;
+						if(dif <= tolerance)
 						{
-							Pixel ap = pixels[i];
-							Uint32 pix = canvas->getPixel(ap.x, ap.y);
-							int dr = abs(red(pix)-red(colSus));
-							int dg = abs(green(pix)-green(colSus));
-							int db = abs(blue(pix)-blue(colSus));
-							int dif = (dr+dg+db)/3;
-							if(dif <= tolerance)
+							replace.push_back(ap);
+
+							if(ap.x-1 >= 0)
 							{
-								replace.push_back(ap);
-
-								if(ap.x-1 >= 0)
+								Pixel aux = {ap.x-1, ap.y};
+								bool exist = false;
+								for(int j = 0; j < analyzed.size(); j++)
 								{
-									Pixel aux = {ap.x-1, ap.y};
-									bool exist = false;
-									for(int j = 0; j < analyzed.size(); j++)
+									Pixel ana = analyzed[j];
+									if(aux.x == ana.x && aux.y == ana.y)
 									{
-										Pixel ana = analyzed[j];
-										if(aux.x == ana.x && aux.y == ana.y)
-										{
-											exist = true;
-											j == analyzed.size();
-										}
-									}
-									if(!exist)
-									{
-										pixels.push_back(aux);
+										exist = true;
+										j == analyzed.size();
 									}
 								}
-								if(ap.x+1 < canvas->w)
+								if(!exist)
 								{
-									Pixel aux = {ap.x+1, ap.y};
-									bool exist = false;
-									for(int j = 0; j < analyzed.size(); j++)
-									{
-										Pixel ana = analyzed[j];
-										if(aux.x == ana.x && aux.y == ana.y)
-										{
-											exist = true;
-											j == analyzed.size();
-										}
-									}
-									if(!exist)
-									{
-										pixels.push_back(aux);
-									}
-								}
-								if(ap.y-1 >= 0){
-									Pixel aux = {ap.x, ap.y-1};
-									bool exist = false;
-									for(int j = 0; j < analyzed.size(); j++)
-									{
-										Pixel ana = analyzed[j];
-										if(aux.x == ana.x && aux.y == ana.y)
-										{
-											exist = true;
-											j == analyzed.size();
-										}
-									}
-									if(!exist)
-									{
-										pixels.push_back(aux);
-									}
-								}
-
-								if(ap.y+1 < canvas->h){
-									Pixel aux = {ap.x, ap.y+1};
-									bool exist = false;
-									for(int j = 0; j < analyzed.size(); j++)
-									{
-										Pixel ana = analyzed[j];
-										if(aux.x == ana.x && aux.y == ana.y)
-										{
-											exist = true;
-											j == analyzed.size();
-										}
-									}
-									if(!exist)
-									{
-										pixels.push_back(aux);
-									}
+									pixels.push_back(aux);
 								}
 							}
-							analyzed.push_back(ap);
-							pixels.erase(pixels.begin() + i);
-						}
-						if(pixels.size() == 0)
-						{
-							finish = true;
-						}
-					}
+							if(ap.x+1 < canvas->w)
+							{
+								Pixel aux = {ap.x+1, ap.y};
+								bool exist = false;
+								for(int j = 0; j < analyzed.size(); j++)
+								{
+									Pixel ana = analyzed[j];
+									if(aux.x == ana.x && aux.y == ana.y)
+									{
+										exist = true;
+										j == analyzed.size();
+									}
+								}
+								if(!exist)
+								{
+									pixels.push_back(aux);
+								}
+							}
+							if(ap.y-1 >= 0){
+								Pixel aux = {ap.x, ap.y-1};
+								bool exist = false;
+								for(int j = 0; j < analyzed.size(); j++)
+								{
+									Pixel ana = analyzed[j];
+									if(aux.x == ana.x && aux.y == ana.y)
+									{
+										exist = true;
+										j == analyzed.size();
+									}
+								}
+								if(!exist)
+								{
+									pixels.push_back(aux);
+								}
+							}
 
-					for(int i = 0; i < replace.size(); i++)
+							if(ap.y+1 < canvas->h){
+								Pixel aux = {ap.x, ap.y+1};
+								bool exist = false;
+								for(int j = 0; j < analyzed.size(); j++)
+								{
+									Pixel ana = analyzed[j];
+									if(aux.x == ana.x && aux.y == ana.y)
+									{
+										exist = true;
+										j == analyzed.size();
+									}
+								}
+								if(!exist)
+								{
+									pixels.push_back(aux);
+								}
+							}
+						}
+						analyzed.push_back(ap);
+						pixels.erase(pixels.begin() + i);
+					}
+					if(pixels.size() == 0)
 					{
-						Pixel ap = replace[i];
-						canvas->setPixel(ap.x, ap.y, colNew);	
+						finish = true;
 					}
 				}
-				else
+
+				for(int i = 0; i < replace.size(); i++)
 				{
-					for(int j = 0; j < canvas->h; j++)
+					Pixel ap = replace[i];
+					canvas->setPixel(ap.x, ap.y, colNew);	
+				}
+			}
+			else
+			{
+				for(int j = 0; j < canvas->h; j++)
+				{
+					for(int i = 0; i < canvas->w; i++)
 					{
-						for(int i = 0; i < canvas->w; i++)
+						Uint32 pix = canvas->getPixel(i, j);
+						int dr = abs(red(pix)-red(colSus));
+						int dg = abs(green(pix)-green(colSus));
+						int db = abs(blue(pix)-blue(colSus));
+						int dif = (dr+dg+db)/3;
+						if(dif <= tolerance)
 						{
-							Uint32 pix = canvas->getPixel(i, j);
-							int dr = abs(red(pix)-red(colSus));
-							int dg = abs(green(pix)-green(colSus));
-							int db = abs(blue(pix)-blue(colSus));
-							int dif = (dr+dg+db)/3;
-							if(dif <= tolerance)
-							{
-								canvas->setPixel(i, j, colNew);		
-							}
+							canvas->setPixel(i, j, colNew);		
 						}
 					}
 				}
 			}
 		}
 	}
-
-	if(global->tool == GRADIENT)
+	else if(global->tool == GRADIENT)
 	{
 		if(events->mouseReleased && events->mouseButton == SDL_BUTTON_LEFT)
 		{
 			Uint32 c1 = global->colorSelect;
-			Uint32 c2 = color(240);
+			Uint32 c2 = color(red(c1), green(c1), blue(c1), 0);
 			bool radius = false;
 			bool linear = false;
 			bool angle = false;
@@ -263,7 +258,7 @@ void View::update()
 		}
 	}
 
-	if(global->tool == ERASER)
+	else if(global->tool == ERASER)
 	{
 		canvas->strokeColor = global->colorSelect;
 		Uint32 c = color(255, 0, 0, 20);

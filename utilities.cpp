@@ -95,6 +95,6 @@ Uint32 lerpColor(Uint32 c1, Uint32 c2, float v){
 	int r = map(v, 0, 1, red(c1), red(c2));
 	int g = map(v, 0, 1, green(c1), green(c2));
 	int b = map(v, 0, 1, blue(c1), blue(c2));
-
-	return color(r, g, b);
+	int a = map(v, 0, 1, alpha(c1), alpha(c2));
+	return color(r, g, b, a);
 }
