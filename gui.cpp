@@ -120,7 +120,7 @@ void Button::draw(int mx, int my)
 	{
 		cc = 140;
 	}
-	if(on) cc += 10;
+	if(on) cc += 8;
 	Uint32 col = color(cc);
 	SDL_Rect background = {x, y, w, h};
 	SDL_FillRect(layout->getSurface(), &background, col);
@@ -156,7 +156,7 @@ void Selector::update(int mx, int my)
 		on = false;
 	}
 
-	if(on && events->mouseClicked)
+	if(on && events->mousePressed)
 	{
 		click = true;
 		press = true;
@@ -171,19 +171,17 @@ void Selector::update(int mx, int my)
 
 void Selector::draw(int mx, int my)
 {
+	Uint32 col = color(100);
+	SDL_Rect background = {x, y, w, h};
+	SDL_FillRect(layout->getSurface(), &background, col);
 	int ww = w/count;
-	for(int i = 0; i < count; i++)
+	if(val >= 0)
 	{
-		int cc = 100;
-		if(i == val)
-		{
-			cc = 140;
-		}
-		if(on) cc += 10;
+		int cc = 140;
+		if(on) cc += 8;
 		Uint32 col = color(cc);
-		SDL_Rect background = {x+ww*i, y, ww, h};
+		SDL_Rect background = {x+ww*val, y, ww, h};
 		SDL_FillRect(layout->getSurface(), &background, col);
-
 	}
 }
 
@@ -235,7 +233,7 @@ void Toggle::draw(int mx, int my)
 	{
 		cc = 140;
 	}
-	if(on) cc += 10;
+	if(on) cc += 8;
 	Uint32 col = color(cc);
 	SDL_Rect background = {x, y, w, h};
 	SDL_FillRect(layout->getSurface(), &background, col);

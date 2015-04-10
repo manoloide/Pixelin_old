@@ -260,10 +260,13 @@ void View::update()
 
 	else if(global->tool == ERASER)
 	{
-		canvas->strokeColor = global->colorSelect;
-		Uint32 c = canvas->getPixel(amx/scale, my/scale);
-		c = color(red(c), green(c), blue(c), alpha(c)-10);
-		canvas->setPixel(amx/scale, my/scale, c, false);
+		if(events->mousePressed && events->mouseButton == SDL_BUTTON_LEFT)
+		{
+			canvas->strokeColor = global->colorSelect;
+			Uint32 c = canvas->getPixel(amx/scale, my/scale);
+			c = color(red(c), green(c), blue(c), 0);
+			canvas->setPixel(amx/scale, my/scale, c, false);
+		}
 	}
 
 	if(events->mouseWheel != 0)
@@ -271,7 +274,6 @@ void View::update()
 		int ascale = scale;
 		scale += events->mouseWheel;
 		if(scale < 1) scale = 1;
-
 
 		int mx = events->mouseX-realLeft;
 		int my = events->mouseY-realTop;
