@@ -265,7 +265,9 @@ void View::update()
 			canvas->strokeColor = global->colorSelect;
 			Uint32 c = canvas->getPixel(amx/scale, my/scale);
 			c = color(red(c), green(c), blue(c), 0);
-			canvas->setPixel(amx/scale, my/scale, c, false);
+			canvas->blendMode(REPLACE);
+			canvas->setPixel(amx/scale, my/scale, c);
+			canvas->blendMode(BLEND);
 		}
 	}
 

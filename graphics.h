@@ -6,6 +6,9 @@
 
 #include "utilities.h"
 
+#define BLEND 0
+#define REPLACE 1
+
 class Graphics 
 {
 public:
@@ -21,8 +24,9 @@ public:
 	void loadImage(char* src);
 	void saveImage(char* src);
 	
+	void blendMode(int);
+
 	Uint32 getPixel(int x, int y);
-	void setPixel(int x, int y, Uint32 color, bool replace);
 	void setPixel(int x, int y, Uint32 color);
 	
 	void line(int x0, int y0, int x1, int y1);
@@ -43,6 +47,9 @@ public:
 
 	Uint32 fillColor, strokeColor;
 	
+
+	int blendValue;
+
 	int w, h;
 	SDL_Surface* surface;
 protected:

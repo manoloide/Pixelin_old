@@ -5,6 +5,7 @@ Graphics::Graphics(int _w, int _h)
 	w = _w;
 	h = _h;
 	surface = SDL_CreateRGBSurface(0, w, h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+	blendMode(BLEND);
 	//loadImage("img.bmp");
 }
 
@@ -61,6 +62,11 @@ void Graphics::saveImage(char* src)
 	SDL_SaveBMP(surface, src);
 }
 
+void Graphics::blendMode(int _blendMode)
+{
+	blendValue = _blendMode;
+}
+
 Uint32 Graphics::getPixel(int x, int y)
 {	
 	Uint32 *pixels = (Uint32 *)surface->pixels;
@@ -68,7 +74,7 @@ Uint32 Graphics::getPixel(int x, int y)
 
 }
 
-void Graphics::setPixel(int x, int y, Uint32 col, bool replace)
+void Graphics::setPixel(int x, int y, Uint32 col)
 {
 
 	if( x < 0 || x >= w || y < 0 || y >= h)
@@ -76,9 +82,21 @@ void Graphics::setPixel(int x, int y, Uint32 col, bool replace)
 		return;
 	}
 
-	if(replace && alpha(col) < 255)
+	switch(blendValue)
 	{
-		col = lerpColor(getPixel(x, y), color(red(col), green(col), blue(col)), alpha(col)/256.);
+		case BLEND:
+		{
+			if(alpha(col) < 255)
+			{
+				col = lerpColor(getPixel(x, y), color(red(col), green(col), blue(col)), alpha(col)/256.);
+			}
+		}
+		break;
+		case REPLACE:
+		{
+			col = col;
+			break;
+		}
 	}
 
 	Uint8 *bufp = (Uint8 *)surface->pixels + y*surface->pitch + x*surface->format->BytesPerPixel;
@@ -94,11 +112,6 @@ void Graphics::setPixel(int x, int y, Uint32 col, bool replace)
 		bufp[0] = col;
 	}
 	return;
-}
-
-void Graphics::setPixel(int x, int y, Uint32 col)
-{
-	setPixel(x, y, col, true);
 }
 
 void Graphics::line(int x0, int y0, int x1, int y1)

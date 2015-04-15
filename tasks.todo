@@ -1,0 +1,43 @@
+
+
+Interface:
+ ☐ Add text font in proyect
+ ☐ TextInput
+ ☐ Add layers
+ ☐ Separate render the update
+ ☐ Implement all render
+ ☐ Add second color in global
+
+Graphics:
+ ☐ add blendMode and constant ADD, REPLACE, ect.
+ ☐ finish loadImage and saveImage
+
+ColorEditor:
+ ☐ Second color
+ ☐ HSB editing
+ ☐ Hsb image color picker
+
+Layers:
+ ☐ Add visual implementation
+ ☐ New layer
+ ☐ Merger Layer
+ ☐ Remove Layer
+ ☐ Add Folders
+ ☐ Add gui alpha a modeblending
+
+View:
+ ☐ Draw layers
+ ☐ Efficient draw layer
+ ☐ Information down (current pixel, zoom, sizepixel)
+
+Tools:
+ ☐ Move
+ ☐ Select tool
+ ☐ Lasso
+
+ ☐ Zoom and hand tool
+ ☐ Color picker
+ ☐ Tile moving 
+ ☐ Magic wand
+ ☐ Blur
+ ☐ Clone
