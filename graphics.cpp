@@ -106,6 +106,11 @@ void Graphics::setPixel(int x, int y, Uint32 col)
 			col = color(min(red(c1),red(c2)), min(green(c1),green(c2)), min(blue(c1),blue(c2)));
 			break;
 		}
+		case MULTIPLY:
+		{
+			col = color((red(c1)*red(c2))/255, (green(c1)*green(c2))/255, (blue(c1)*blue(c2))/255);
+			break;
+		}
 	}
 
 	Uint8 *bufp = (Uint8 *)surface->pixels + y*surface->pitch + x*surface->format->BytesPerPixel;
