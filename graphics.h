@@ -9,6 +9,11 @@
 #define BLEND 0
 #define REPLACE 1
 
+#define DARKEN 2
+#define MULTIPLY 3
+#define COLORBURN 4
+#define LINEARBURN 5
+
 class Graphics 
 {
 public:

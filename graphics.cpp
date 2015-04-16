@@ -5,7 +5,7 @@ Graphics::Graphics(int _w, int _h)
 	w = _w;
 	h = _h;
 	surface = SDL_CreateRGBSurface(0, w, h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
-	blendMode(BLEND);
+	blendMode(DARKEN);
 	//loadImage("img.bmp");
 }
 
@@ -82,19 +82,28 @@ void Graphics::setPixel(int x, int y, Uint32 col)
 		return;
 	}
 
+
+	Uint32 c1 = col;
+	Uint32 c2 = getPixel(x, y);
+
 	switch(blendValue)
 	{
 		case BLEND:
 		{
 			if(alpha(col) < 255)
 			{
-				col = lerpColor(getPixel(x, y), color(red(col), green(col), blue(col)), alpha(col)/256.);
+				col = lerpColor(c2, color(red(col), green(col), blue(col)), alpha(col)/256.);
 			}
+			break;
 		}
-		break;
 		case REPLACE:
 		{
 			col = col;
+			break;
+		}
+		case DARKEN:
+		{
+			col = color(min(red(c1),red(c2)), min(green(c1),green(c2)), min(blue(c1),blue(c2)));
 			break;
 		}
 	}

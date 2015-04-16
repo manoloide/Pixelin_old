@@ -9,7 +9,8 @@ Interface:
  ☐ Add second color in global
 
 Graphics:
- ☐ add blendMode and constant ADD, REPLACE, ect.
+ ✔ add blendMode and constant ADD, REPLACE, ect. @done (15-04-15 20:14)
+ ☐ add blendModes... ();
  ☐ finish loadImage and saveImage
 
 ColorEditor:
@@ -22,6 +23,7 @@ Layers:
  ☐ New layer
  ☐ Merger Layer
  ☐ Remove Layer
+ ☐ Orden Layer
  ☐ Add Folders
  ☐ Add gui alpha a modeblending
 
